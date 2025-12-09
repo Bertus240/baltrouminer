@@ -8,22 +8,30 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
-        /* --- DESIGN V13 --- */
+        /* --- DESIGN V16 (Ton Design Orange) --- */
         :root { --bg-dark: #09090b; --bg-gradient: radial-gradient(circle at 50% -20%, #3a2400 0%, #09090b 60%); --glass-bg: rgba(255, 255, 255, 0.03); --glass-border: rgba(255, 255, 255, 0.08); --accent: #FFAD00; --danger: #ff453a; --success: #32d74b; --text-main: #ffffff; --text-muted: #888888; }
-        body { background: var(--bg-dark); background-image: var(--bg-gradient); color: var(--text-main); font-family: 'Inter', sans-serif; margin: 0; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 20px; box-sizing: border-box; }
+        body { background: var(--bg-dark); background-image: var(--bg-gradient); background-attachment: fixed; color: var(--text-main); font-family: 'Inter', sans-serif; margin: 0; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 20px; box-sizing: border-box; overflow-x: hidden;}
+        
+        /* HEADER */
         header { width: 100%; max-width: 900px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .brand h1 { font-weight: 900; font-size: 1.5rem; margin: 0; } .brand span { color: var(--accent); } .brand p { margin: 0; font-size: 0.8rem; color: var(--text-muted); }
-        .chart-container { width: 100%; max-width: 900px; height: 220px; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px; padding: 15px; box-sizing: border-box; margin-bottom: 20px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; width: 100%; max-width: 900px; }
+        .brand h1 { font-weight: 900; font-size: 1.5rem; margin: 0; } .brand span { color: var(--accent); }
+        .status-badge { background: rgba(255,173,0,0.1); border: 1px solid var(--accent); color: var(--accent); padding: 4px 10px; border-radius: 12px; font-size: 0.7rem; font-weight: 600;}
+
+        /* CONTENEUR DU DESIGN PERSO */
+        #customDashboard { width: 100%; max-width: 900px; transition: opacity 0.5s; }
+        .chart-container { height: 220px; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px; padding: 15px; margin-bottom: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; }
         .card { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: 20px; padding: 20px; }
         .card-label { font-size: 0.7rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px; display: block;}
         .card-value { font-size: 1.8rem; font-weight: 800; white-space: nowrap; }
         .sub-value { font-size: 0.75rem; color: var(--accent); margin-top: 5px; }
-        .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--danger); margin-right: 5px; }
-        .status-dot.online { background: var(--success); }
-        #consoleLog { margin-top: 30px; width: 100%; max-width: 900px; background: #111; color: #00ff9d; font-family: monospace; font-size: 0.75rem; padding: 15px; border-radius: 10px; border: 1px solid #333; min-height: 50px; white-space: pre-wrap; word-break: break-all; }
-        #rescueBtn { display: none; margin-top: 20px; background: var(--accent); color: #000; text-decoration: none; padding: 15px 30px; border-radius: 50px; font-weight: 800; }
-        @media (max-width: 600px) { .grid { grid-template-columns: 1fr 1fr; } .card { padding: 15px; } .card-value { font-size: 1.4rem; } .chart-container { height: 180px; } }
+
+        /* CONTENEUR DE SECOURS (IFRAME) */
+        #fallbackContainer { display: none; width: 100vw; height: 80vh; position: fixed; top: 80px; left: 0; background: #000; z-index: 100; border-top: 2px solid var(--danger); }
+        iframe { width: 100%; height: 100%; border: none; }
+        .fallback-notice { position: absolute; top: -30px; left: 50%; transform: translateX(-50%); background: var(--danger); color: #fff; padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; white-space: nowrap; }
+
+        @media (max-width: 600px) { .grid { grid-template-columns: 1fr 1fr; } .chart-container { height: 180px; } }
     </style>
 </head>
 <body>
@@ -31,106 +39,71 @@
     <header>
         <div class="brand">
             <h1>NERD<span>MINER</span></h1>
-            <p>Station Solaire • <span id="connectionStatus" style="color:#aaa">Chargement...</span></p>
         </div>
-        <button onclick="location.reload()" style="background:none; border:1px solid #555; color:#fff; padding:5px 10px; border-radius:5px;">↻</button>
+        <div id="statusTag" class="status-badge">TENTATIVE CONNEXION...</div>
+        <button onclick="location.reload()" style="background:none; border:1px solid #555; color:#fff; padding:5px 10px; border-radius:5px; margin-left: 10px;">↻</button>
     </header>
 
-    <div class="chart-container"><canvas id="hashrateChart"></canvas></div>
-
-    <div class="grid">
-        <div class="card"><span class="card-label">Puissance</span><div class="card-value"><span id="hashrate">0.00</span> <span style="font-size:0.9rem; color:#888;">KH/s</span></div><div class="sub-value">Moy 24h: <span id="hashrate24">0</span></div></div>
-        <div class="card"><span class="card-label">Best Diff</span><div class="card-value" id="bestDiff">0</div><div class="sub-value">Record Session</div></div>
-        <div class="card"><span class="card-label">Mineurs</span><div class="card-value" id="workersCount">0</div><div class="sub-value">Actifs</div></div>
-        <div class="card"><span class="card-label">Dernier Signal</span><div class="card-value" style="font-size: 1.2rem;" id="lastSeen">--:--</div></div>
+    <div id="customDashboard">
+        <div class="chart-container"><canvas id="hashrateChart"></canvas></div>
+        <div class="grid">
+            <div class="card"><span class="card-label">Puissance</span><div class="card-value"><span id="hashrate">--</span> <span style="font-size:0.9rem; color:#888;">KH/s</span></div><div class="sub-value">Moy 24h: <span id="hashrate24">--</span></div></div>
+            <div class="card"><span class="card-label">Best Diff</span><div class="card-value" id="bestDiff">--</div><div class="sub-value">Record Session</div></div>
+            <div class="card"><span class="card-label">Mineurs</span><div class="card-value" id="workersCount">--</div><div class="sub-value">Actifs</div></div>
+            <div class="card"><span class="card-label">Dernier Signal</span><div class="card-value" style="font-size: 1.2rem;" id="lastSeen">--:--</div></div>
+        </div>
     </div>
 
-    <a id="rescueBtn" href="#" target="_blank">OUVRIR PAGE OFFICIELLE</a>
-    <div id="consoleLog">Démarrage V13...<br></div>
+    <div id="fallbackContainer">
+        <div class="fallback-notice">DESIGN BLOQUÉ -> PASSAGE EN MODE OFFICIEL</div>
+        <iframe id="fallbackFrame"></iframe>
+    </div>
 
     <script>
+        // CONFIG
         const myAddress = "bc1pns5myh0qlfl3wyzed4rqy86c6p26fv5z9g0qr7ne74rc3kaa7a4sjn0rlf";
-        
-        // --- NOUVELLE STRATEGIE V13 ---
-        // On utilise 'cors-anywhere' qui est souvent plus fiable
-        const target = `https://web.public-pool.io/api/miners?address=${myAddress}`;
-        const proxy = `https://corsproxy.io/?`; // On teste celui-ci en priorité
+        const targetUrl = `https://web.public-pool.io/api/miners?address=${myAddress}`;
+        const officialSiteUrl = `https://web.public-pool.io/#/app/${myAddress}`;
+        // Le proxy le plus costaud actuellement
+        const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`;
 
-        function logger(msg, type='info') {
-            const el = document.getElementById('consoleLog');
-            const color = type === 'error' ? '#ff453a' : '#00ff9d';
-            el.innerHTML += `<span style="color:${color}">[${new Date().toLocaleTimeString()}] ${msg}</span><br>`;
-        }
-
+        let failedAttempts = 0;
         let chartInstance = null;
-        function initChart() {
-            const ctx = document.getElementById('hashrateChart');
-            if(!ctx) return;
-            const gradient = ctx.getContext('2d').createLinearGradient(0, 0, 0, 200);
-            gradient.addColorStop(0, 'rgba(255, 173, 0, 0.4)');
-            gradient.addColorStop(1, 'rgba(255, 173, 0, 0.0)');
-            chartInstance = new Chart(ctx, {
-                type: 'line',
-                data: { labels: [], datasets: [{ label: 'Hashrate', data: [], borderColor: '#FFAD00', backgroundColor: gradient, borderWidth: 2, pointRadius: 0, fill: true, tension: 0.4 }] },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } } } }
-            });
+
+        // --- 1. FONCTION D'ACTIVATION DU MODE SECOURS ---
+        function activateFallback() {
+            document.getElementById('statusTag').innerText = "MODE SECOURS ACTIF";
+            document.getElementById('statusTag').style.background = "var(--danger)";
+            document.getElementById('statusTag').style.color = "#fff";
+            
+            // On cache le design perso
+            document.getElementById('customDashboard').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('customDashboard').style.display = 'none';
+                // On affiche l'iframe officielle
+                document.getElementById('fallbackFrame').src = officialSiteUrl;
+                document.getElementById('fallbackContainer').style.display = 'block';
+            }, 500);
         }
 
+        // --- 2. FONCTION DE RECUPERATION DES DONNEES (Pour ton design) ---
         async function fetchStats() {
-            logger("📡 Connexion V13...");
+            document.getElementById('statusTag').innerText = "ACTUALISATION...";
             try {
-                // Essai direct via corsproxy.io
-                const res = await fetch(proxy + encodeURIComponent(target));
-                if (!res.ok) throw new Error("Erreur HTTP " + res.status);
-                
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 5000); // 5s max pour répondre
+
+                const response = await fetch(proxyUrl, { signal: controller.signal });
+                clearTimeout(timeoutId);
+
+                if (!response.ok) throw new Error("Erreur Proxy");
                 const data = await response.json();
-                
-                // Si on est là, c'est gagné
-                logger("✅ DONNÉES REÇUES !");
-                updateUI(data);
+
+                // SUCCES ! On met à jour ton design
+                failedAttempts = 0; // Reset compteur d'échec
+                document.getElementById('statusTag').innerText = "DESIGN PERSO ACTIF";
+                document.getElementById('statusTag').style.background = "rgba(50, 215, 75, 0.2)";
+                document.getElementById('statusTag').style.color = "#32d74b";
+                updateCustomUI(data);
 
             } catch (err) {
-                // Si ça échoue, on tente une méthode de secours (JSONP simulé)
-                logger("⚠️ Echec méthode 1, tentative méthode 2...");
-                try {
-                    const res2 = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(target)}`);
-                    const json2 = await res2.json();
-                    if(json2.contents) {
-                        logger("✅ DONNÉES REÇUES (Méthode 2) !");
-                        updateUI(JSON.parse(json2.contents));
-                    } else { throw new Error("Vide"); }
-                } catch(e2) {
-                    logger("❌ ECHEC TOTAL. Le serveur bloque tout.", 'error');
-                    document.getElementById('rescueBtn').href = `https://web.public-pool.io/#/app/${myAddress}`;
-                    document.getElementById('rescueBtn').style.display = "inline-block";
-                }
-            }
-        }
-
-        function updateUI(data) {
-            let hr = data.hashrate1m || 0;
-            if (hr > 0) {
-                document.getElementById('connectionStatus').innerText = "ONLINE";
-                document.getElementById('connectionStatus').style.color = "#32d74b";
-            } else {
-                document.getElementById('connectionStatus').innerText = "OFFLINE";
-                document.getElementById('connectionStatus').style.color = "#ff453a";
-            }
-            document.getElementById('hashrate').innerText = (hr / 1000).toFixed(2);
-            document.getElementById('hashrate24').innerText = (data.hashrate24h / 1000).toFixed(2);
-            document.getElementById('workersCount').innerText = data.workers ? Object.keys(data.workers).length : 0;
-            document.getElementById('bestDiff').innerText = (data.bestDifficulty || 0).toLocaleString();
-            document.getElementById('lastSeen').innerText = new Date().toLocaleTimeString();
-
-            if (chartInstance) {
-                if (chartInstance.data.labels.length > 20) { chartInstance.data.labels.shift(); chartInstance.data.datasets[0].data.shift(); }
-                chartInstance.data.labels.push(new Date().toLocaleTimeString());
-                chartInstance.data.datasets[0].data.push(hr / 1000);
-                chartInstance.update();
-            }
-        }
-
-        window.onload = function() { initChart(); fetchStats(); setInterval(fetchStats, 30000); };
-    </script>
-</body>
-</html>
