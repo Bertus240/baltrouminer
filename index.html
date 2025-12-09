@@ -3,35 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NerdMiner Dashboard • Rémi</title>
+    <title>NerdMiner • Rémi</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
-        /* --- DESIGN V16 (Ton Design Orange) --- */
-        :root { --bg-dark: #09090b; --bg-gradient: radial-gradient(circle at 50% -20%, #3a2400 0%, #09090b 60%); --glass-bg: rgba(255, 255, 255, 0.03); --glass-border: rgba(255, 255, 255, 0.08); --accent: #FFAD00; --danger: #ff453a; --success: #32d74b; --text-main: #ffffff; --text-muted: #888888; }
-        body { background: var(--bg-dark); background-image: var(--bg-gradient); background-attachment: fixed; color: var(--text-main); font-family: 'Inter', sans-serif; margin: 0; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 20px; box-sizing: border-box; overflow-x: hidden;}
+        /* --- DESIGN SYSTEM V15 (Orange Portal) --- */
+        :root {
+            --bg-dark: #09090b;
+            --accent: #FFAD00; /* Orange */
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; /* Pas de scroll sur le corps */
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* HEADER FIXE EN HAUT */
+        header {
+            height: 60px;
+            background: #111;
+            border-bottom: 1px solid var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            box-shadow: 0 0 20px rgba(255, 173, 0, 0.1);
+            z-index: 10;
+        }
+
+        .brand h1 {
+            color: #fff;
+            font-size: 1.2rem;
+            margin: 0;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+        .brand span { color: var(--accent); }
         
-        /* HEADER */
-        header { width: 100%; max-width: 900px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .brand h1 { font-weight: 900; font-size: 1.5rem; margin: 0; } .brand span { color: var(--accent); }
-        .status-badge { background: rgba(255,173,0,0.1); border: 1px solid var(--accent); color: var(--accent); padding: 4px 10px; border-radius: 12px; font-size: 0.7rem; font-weight: 600;}
+        .status-badge {
+            background: rgba(255, 173, 0, 0.15);
+            color: var(--accent);
+            padding: 5px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border: 1px solid rgba(255, 173, 0, 0.3);
+        }
 
-        /* CONTENEUR DU DESIGN PERSO */
-        #customDashboard { width: 100%; max-width: 900px; transition: opacity 0.5s; }
-        .chart-container { height: 220px; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px; padding: 15px; margin-bottom: 20px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; }
-        .card { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: 20px; padding: 20px; }
-        .card-label { font-size: 0.7rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px; display: block;}
-        .card-value { font-size: 1.8rem; font-weight: 800; white-space: nowrap; }
-        .sub-value { font-size: 0.75rem; color: var(--accent); margin-top: 5px; }
+        /* BOUTON RECHARGER */
+        .btn-reload {
+            background: none; border: none; color: #fff; font-size: 1.2rem; cursor: pointer;
+        }
 
-        /* CONTENEUR DE SECOURS (IFRAME) */
-        #fallbackContainer { display: none; width: 100vw; height: 80vh; position: fixed; top: 80px; left: 0; background: #000; z-index: 100; border-top: 2px solid var(--danger); }
-        iframe { width: 100%; height: 100%; border: none; }
-        .fallback-notice { position: absolute; top: -30px; left: 50%; transform: translateX(-50%); background: var(--danger); color: #fff; padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; white-space: nowrap; }
+        /* LA FENETRE SUR LE MONDE (IFRAME) */
+        .portal-container {
+            flex: 1; /* Prend tout le reste de la place */
+            width: 100%;
+            position: relative;
+            background: #000;
+        }
 
-        @media (max-width: 600px) { .grid { grid-template-columns: 1fr 1fr; } .chart-container { height: 180px; } }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* MESSAGE SI CA BLOQUE */
+        .fallback-msg {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            text-align: center; color: #fff; z-index: -1; width: 80%;
+        }
+        .btn-direct {
+            display: inline-block; margin-top: 15px; padding: 12px 25px;
+            background: var(--accent); color: #000; text-decoration: none;
+            font-weight: bold; border-radius: 50px;
+        }
     </style>
 </head>
 <body>
@@ -40,70 +93,31 @@
         <div class="brand">
             <h1>NERD<span>MINER</span></h1>
         </div>
-        <div id="statusTag" class="status-badge">TENTATIVE CONNEXION...</div>
-        <button onclick="location.reload()" style="background:none; border:1px solid #555; color:#fff; padding:5px 10px; border-radius:5px; margin-left: 10px;">↻</button>
+        <div class="status-badge">LIVE VIEW</div>
+        <button class="btn-reload" onclick="document.getElementById('myFrame').src = document.getElementById('myFrame').src">↻</button>
     </header>
 
-    <div id="customDashboard">
-        <div class="chart-container"><canvas id="hashrateChart"></canvas></div>
-        <div class="grid">
-            <div class="card"><span class="card-label">Puissance</span><div class="card-value"><span id="hashrate">--</span> <span style="font-size:0.9rem; color:#888;">KH/s</span></div><div class="sub-value">Moy 24h: <span id="hashrate24">--</span></div></div>
-            <div class="card"><span class="card-label">Best Diff</span><div class="card-value" id="bestDiff">--</div><div class="sub-value">Record Session</div></div>
-            <div class="card"><span class="card-label">Mineurs</span><div class="card-value" id="workersCount">--</div><div class="sub-value">Actifs</div></div>
-            <div class="card"><span class="card-label">Dernier Signal</span><div class="card-value" style="font-size: 1.2rem;" id="lastSeen">--:--</div></div>
+    <div class="portal-container">
+        <div class="fallback-msg">
+            <h3>Connexion intégrée bloquée ?</h3>
+            <p>Le navigateur sécurisé empêche parfois l'affichage intégré.</p>
+            <a id="directLink" href="#" target="_blank" class="btn-direct">OUVRIR EN PLEIN ÉCRAN ↗</a>
         </div>
-    </div>
 
-    <div id="fallbackContainer">
-        <div class="fallback-notice">DESIGN BLOQUÉ -> PASSAGE EN MODE OFFICIEL</div>
-        <iframe id="fallbackFrame"></iframe>
+        <iframe id="myFrame" src="" allow="fullscreen"></iframe>
     </div>
 
     <script>
-        // CONFIG
+        // TON ADRESSE
         const myAddress = "bc1pns5myh0qlfl3wyzed4rqy86c6p26fv5z9g0qr7ne74rc3kaa7a4sjn0rlf";
-        const targetUrl = `https://web.public-pool.io/api/miners?address=${myAddress}`;
-        const officialSiteUrl = `https://web.public-pool.io/#/app/${myAddress}`;
-        // Le proxy le plus costaud actuellement
-        const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`;
+        
+        // Lien officiel Public Pool (Dashboard)
+        const targetUrl = `https://web.public-pool.io/#/app/${myAddress}`;
 
-        let failedAttempts = 0;
-        let chartInstance = null;
+        // On injecte le lien
+        document.getElementById('myFrame').src = targetUrl;
+        document.getElementById('directLink').href = targetUrl;
+    </script>
 
-        // --- 1. FONCTION D'ACTIVATION DU MODE SECOURS ---
-        function activateFallback() {
-            document.getElementById('statusTag').innerText = "MODE SECOURS ACTIF";
-            document.getElementById('statusTag').style.background = "var(--danger)";
-            document.getElementById('statusTag').style.color = "#fff";
-            
-            // On cache le design perso
-            document.getElementById('customDashboard').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('customDashboard').style.display = 'none';
-                // On affiche l'iframe officielle
-                document.getElementById('fallbackFrame').src = officialSiteUrl;
-                document.getElementById('fallbackContainer').style.display = 'block';
-            }, 500);
-        }
-
-        // --- 2. FONCTION DE RECUPERATION DES DONNEES (Pour ton design) ---
-        async function fetchStats() {
-            document.getElementById('statusTag').innerText = "ACTUALISATION...";
-            try {
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 5000); // 5s max pour répondre
-
-                const response = await fetch(proxyUrl, { signal: controller.signal });
-                clearTimeout(timeoutId);
-
-                if (!response.ok) throw new Error("Erreur Proxy");
-                const data = await response.json();
-
-                // SUCCES ! On met à jour ton design
-                failedAttempts = 0; // Reset compteur d'échec
-                document.getElementById('statusTag').innerText = "DESIGN PERSO ACTIF";
-                document.getElementById('statusTag').style.background = "rgba(50, 215, 75, 0.2)";
-                document.getElementById('statusTag').style.color = "#32d74b";
-                updateCustomUI(data);
-
-            } catch (err) {
+</body>
+</html>
