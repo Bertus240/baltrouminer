@@ -15,85 +15,85 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     
     <style>
-        /* --- DESIGN SYSTEM --- */
+        /* --- DESIGN SYSTEM V27 (USD Edition) --- */
         :root {
             --bg-dark: #09090b;
-            --accent: #FFAD00; /* Orange */
-            --glass-bg: rgba(15, 15, 15, 0.85);
+            --accent: #FFAD00;
+            --glass-bg: rgba(20, 20, 20, 0.95);
             --glass-border: rgba(255, 255, 255, 0.1);
             --header-height: 60px;
+            --success: #32d74b;
+            --danger: #ff453a;
         }
 
         body {
             background-color: var(--bg-dark);
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            font-family: 'Inter', sans-serif;
+            margin: 0; height: 100vh; display: flex; flex-direction: column;
+            overflow: hidden; font-family: 'Inter', sans-serif;
         }
 
         /* HEADER */
         header {
             height: var(--header-height);
-            background: var(--glass-bg);
-            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            background: rgba(10,10,10,0.9);
+            backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--accent);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 15px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
-            z-index: 100;
-            flex-shrink: 0;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 15px; z-index: 100; flex-shrink: 0;
         }
 
-        .brand-group { display: flex; flex-direction: column; }
-        
-        .brand h1 {
-            color: #fff; font-size: 1.1rem; margin: 0; font-weight: 900; letter-spacing: -0.5px;
-        }
+        .brand-group { display: flex; flex-direction: column; justify-content: center; }
+        .brand h1 { color: #fff; font-size: 1.1rem; margin: 0; font-weight: 900; letter-spacing: -0.5px; line-height: 1.1;}
         .brand span { color: var(--accent); }
         
-        /* PRIX BTC */
-        .btc-price {
-            font-size: 0.75rem; color: #888; font-family: monospace; margin-top: 2px;
-        }
-        .btc-price span { color: #fff; font-weight: bold; }
+        /* PRIX BTC HEADER */
+        .btc-ticker { font-size: 0.75rem; color: #fff; font-weight: 600; font-family: monospace; opacity: 0.8; margin-top: 2px; }
+        
+        .header-actions { display: flex; gap: 10px; }
 
-        /* BOUTON REFRESH */
-        .btn-reload {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid var(--glass-border);
-            color: #fff;
-            width: 38px; height: 38px;
-            border-radius: 10px;
-            font-size: 1.2rem;
-            cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            transition: all 0.3s ease;
+        /* BOUTONS */
+        .btn-icon {
+            background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
+            color: #fff; width: 38px; height: 38px; border-radius: 10px;
+            font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s;
         }
-        .btn-reload:active {
-            background: var(--accent); color: #000; border-color: var(--accent); transform: scale(0.9);
-        }
-        .rotating { animation: spin 0.6s linear; }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .btn-icon:active { background: var(--accent); color: #000; transform: scale(0.95); }
+        .btn-tools { border-color: var(--accent); color: var(--accent); }
 
         /* IFRAME */
-        .portal-container {
-            flex-grow: 1;
-            width: 100%;
-            position: relative;
-            background: #000;
-        }
-
+        .portal-container { flex-grow: 1; width: 100%; position: relative; background: #000; }
         iframe { width: 100%; height: 100%; border: none; display: block; }
 
-        .loader-msg {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            color: #444; font-size: 0.8rem; z-index: -1;
+        /* --- OVERLAY TOOLS --- */
+        #toolsOverlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
+            z-index: 200; display: none; opacity: 0; transition: opacity 0.3s;
+            align-items: center; justify-content: center;
         }
+        
+        .tools-card {
+            width: 90%; max-width: 400px;
+            background: #151515; border: 1px solid var(--glass-border);
+            border-radius: 24px; padding: 25px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            transform: translateY(20px); transition: transform 0.3s;
+        }
+
+        .tools-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .tools-title { font-size: 1.2rem; font-weight: 800; color: #fff; }
+        .btn-close { background: none; border: none; color: #888; font-size: 1.5rem; cursor: pointer; }
+
+        .widget { background: rgba(255,255,255,0.03); border-radius: 15px; padding: 15px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.05); }
+        .widget-label { font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+        .widget-value { font-size: 1.5rem; font-weight: 700; color: #fff; }
+        
+        .fg-bar { height: 6px; width: 100%; background: #333; border-radius: 3px; margin-top: 10px; overflow: hidden; }
+        .fg-fill { height: 100%; width: 50%; background: #fff; transition: width 1s; }
+        
+        .jackpot-val { color: var(--accent); text-shadow: 0 0 15px rgba(255,173,0,0.3); }
+        .halving-info { font-size: 0.8rem; color: #aaa; margin-top: 5px; }
     </style>
 </head>
 <body>
@@ -101,48 +101,112 @@
     <header>
         <div class="brand-group">
             <div class="brand"><h1>NERD<span>MINER</span></h1></div>
-            <div class="btc-price">BTC: <span id="btcVal">...</span> $</div>
+            <div class="btc-ticker" id="headerPrice">$...</div>
         </div>
-        
-        <button id="refreshBtn" class="btn-reload" onclick="forceRefresh()">↻</button>
+        <div class="header-actions">
+            <button class="btn-icon btn-tools" onclick="openTools()">⚡</button>
+            <button class="btn-icon" onclick="reloadIframe()">↻</button>
+        </div>
     </header>
 
+    <div id="toolsOverlay">
+        <div class="tools-card" id="toolsCard">
+            <div class="tools-header">
+                <div class="tools-title">Market Tools ($)</div>
+                <button class="btn-close" onclick="closeTools()">×</button>
+            </div>
+
+            <div class="widget">
+                <div class="widget-label">Fear & Greed Index</div>
+                <div class="widget-value" id="fgValue">--</div>
+                <div class="fg-bar"><div id="fgFill" class="fg-fill"></div></div>
+                <div style="font-size:0.8rem; margin-top:5px; color:#aaa;" id="fgText">Chargement...</div>
+            </div>
+
+            <div class="widget">
+                <div class="widget-label">Jackpot (Bloc Reward)</div>
+                <div class="widget-value jackpot-val" id="jackpotValue">-- $</div>
+                <div style="font-size:0.8rem; color:#666;">Si tu trouves le bloc (3.125 BTC)</div>
+            </div>
+
+            <div class="widget">
+                <div class="widget-label">Prochain Halving</div>
+                <div class="widget-value">2028</div>
+                <div class="halving-info">Dans ~1200 jours</div>
+                <div class="fg-bar"><div class="fg-fill" style="width: 25%; background: var(--accent);"></div></div>
+            </div>
+        </div>
+    </div>
+
     <div class="portal-container">
-        <div class="loader-msg">Connexion au satellite...</div>
         <iframe id="myFrame" src="" allow="fullscreen"></iframe>
     </div>
 
     <script>
-        // CONFIGURATION
         const myAddress = "bc1pns5myh0qlfl3wyzed4rqy86c6p26fv5z9g0qr7ne74rc3kaa7a4sjn0rlf";
         const targetUrl = `https://web.public-pool.io/#/app/${myAddress}`;
-
-        // 1. Lancer l'Iframe
         const iframe = document.getElementById('myFrame');
+        
         iframe.src = targetUrl;
 
-        // 2. Fonction Refresh
-        function forceRefresh() {
-            const btn = document.getElementById('refreshBtn');
-            btn.classList.add('rotating');
-            
-            iframe.src = 'about:blank';
-            setTimeout(() => { iframe.src = targetUrl; }, 100);
-
-            setTimeout(() => { btn.classList.remove('rotating'); }, 600);
+        // --- GESTION MENU ---
+        function openTools() {
+            const ol = document.getElementById('toolsOverlay');
+            const card = document.getElementById('toolsCard');
+            ol.style.display = 'flex';
+            setTimeout(() => { ol.style.opacity = '1'; card.style.transform = 'translateY(0)'; }, 10);
+            fetchMarketData();
         }
 
-        // 3. Récupérer le prix du BTC en USD
-        async function getBTC() {
+        function closeTools() {
+            const ol = document.getElementById('toolsOverlay');
+            const card = document.getElementById('toolsCard');
+            ol.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            setTimeout(() => { ol.style.display = 'none'; }, 300);
+        }
+
+        // --- API DATA (USD) ---
+        async function fetchMarketData() {
             try {
-                // Changement ici : vs_currencies=usd
-                const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
-                const data = await res.json();
-                // Formatage en Anglais pour avoir la virgule au bon endroit (ex: 90,000)
-                document.getElementById('btcVal').innerText = data.bitcoin.usd.toLocaleString('en-US');
-            } catch(e) {}
+                // 1. Prix BTC en USD
+                const resPrice = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
+                const dataPrice = await resPrice.json();
+                const btcUsd = dataPrice.bitcoin.usd;
+                
+                // Update Header
+                document.getElementById('headerPrice').innerText = "$" + btcUsd.toLocaleString('en-US');
+
+                // Calcul Jackpot (3.125 BTC) en USD
+                const jackpot = btcUsd * 3.125;
+                document.getElementById('jackpotValue').innerText = jackpot.toLocaleString('en-US', {style:'currency', currency:'USD', maximumFractionDigits:0});
+
+                // 2. Fear & Greed
+                const resFG = await fetch('https://api.alternative.me/fng/');
+                const dataFG = await resFG.json();
+                const score = dataFG.data[0].value;
+                const classification = dataFG.data[0].value_classification;
+
+                document.getElementById('fgValue').innerText = score + "/100";
+                document.getElementById('fgText').innerText = classification;
+                
+                const fill = document.getElementById('fgFill');
+                fill.style.width = score + "%";
+                if(score < 25) fill.style.background = "#ff453a"; 
+                else if(score > 75) fill.style.background = "#32d74b"; 
+                else fill.style.background = "#FFAD00";
+
+            } catch(e) { console.log("Erreur API"); }
         }
-        getBTC();
+
+        function reloadIframe() {
+            iframe.src = 'about:blank';
+            setTimeout(() => { iframe.src = targetUrl; }, 50);
+        }
+        
+        fetchMarketData(); // Lancement au démarrage pour le header
+        setInterval(fetchMarketData, 60000); // Mise à jour auto chaque minute
+
     </script>
 
 </body>
