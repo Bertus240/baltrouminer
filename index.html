@@ -9,98 +9,141 @@
     <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%25%22 height=%22100%25%22 fill=%22%2309090b%22/><text x=%2250%25%22 y=%2255%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-size=%2270%22>⛏️</text></svg>">
 
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#09090b">
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
-        /* --- DESIGN SYSTEM V23 --- */
+        /* --- DESIGN SYSTEM --- */
         :root {
             --bg-dark: #09090b;
-            --bg-gradient: radial-gradient(circle at 50% -20%, #3a2400 0%, #09090b 60%);
-            --glass-bg: rgba(255, 255, 255, 0.04);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --accent: #FFAD00;
-            --danger: #ff453a;
-            --success: #32d74b;
-            --text-main: #ffffff;
-            --text-muted: #888888;
+            --accent: #FFAD00; /* Orange */
+            --glass-bg: rgba(15, 15, 15, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --header-height: 60px;
         }
 
         body {
-            background: var(--bg-dark);
-            background-image: var(--bg-gradient);
-            background-attachment: fixed;
-            color: var(--text-main);
-            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
             margin: 0;
-            min-height: 100vh;
-            display: flex; flex-direction: column; align-items: center;
-            padding: 20px; padding-bottom: 80px; box-sizing: border-box;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
         }
 
-        /* HEADER & CLOCK */
-        header { width: 100%; max-width: 900px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .brand h1 { font-weight: 900; font-size: 1.5rem; margin: 0; } .brand span { color: var(--accent); }
-        .clock { font-family: monospace; font-size: 1.2rem; color: var(--accent); font-weight: bold; background: rgba(0,0,0,0.3); padding: 5px 10px; border-radius: 8px; border: 1px solid var(--glass-border); }
-
-        /* BTC TICKER (NOUVEAU) */
-        .ticker-card {
-            width: 100%; max-width: 900px;
-            background: linear-gradient(90deg, rgba(255,173,0,0.1), rgba(0,0,0,0));
-            border: 1px solid var(--accent);
-            border-radius: 20px; padding: 15px; margin-bottom: 20px;
-            display: flex; justify-content: space-between; align-items: center;
-            box-sizing: border-box;
-        }
-        .ticker-label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; }
-        .ticker-price { font-size: 1.5rem; font-weight: 800; color: #fff; }
-        .ticker-change { font-size: 0.9rem; font-weight: 600; }
-        .up { color: var(--success); } .down { color: var(--danger); }
-
-        /* GRAPH */
-        .chart-container { width: 100%; max-width: 900px; height: 200px; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px; padding: 15px; box-sizing: border-box; margin-bottom: 20px; }
-
-        /* GRID */
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; width: 100%; max-width: 900px; }
-        .card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px; padding: 20px; }
-        .card-label { font-size: 0.7rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px; display: block; }
-        .card-value { font-size: 1.6rem; font-weight: 800; }
-        .sub-value { font-size: 0.7rem; color: var(--accent); margin-top: 5px; opacity: 0.8; }
-
-        /* FOOTER FIXE */
-        .fixed-footer {
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+        /* HEADER */
+        header {
+            height: var(--header-height);
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
             z-index: 100;
+            flex-shrink: 0;
         }
-        .btn-official {
-            background: #222; color: #fff; text-decoration: none;
-            padding: 12px 25px; border-radius: 50px; font-weight: bold; font-size: 0.9rem;
+
+        .brand-group { display: flex; flex-direction: column; }
+        
+        .brand h1 {
+            color: #fff; font-size: 1.1rem; margin: 0; font-weight: 900; letter-spacing: -0.5px;
+        }
+        .brand span { color: var(--accent); }
+        
+        /* PRIX BTC */
+        .btc-price {
+            font-size: 0.75rem; color: #888; font-family: monospace; margin-top: 2px;
+        }
+        .btc-price span { color: #fff; font-weight: bold; }
+
+        /* BOUTON REFRESH */
+        .btn-reload {
+            background: rgba(255,255,255,0.05);
             border: 1px solid var(--glass-border);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            display: flex; align-items: center; gap: 10px;
-            transition: 0.2s;
+            color: #fff;
+            width: 38px; height: 38px;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.3s ease;
         }
-        .btn-official:active { transform: translateX(-50%) scale(0.95); background: var(--accent); color: #000; }
+        .btn-reload:active {
+            background: var(--accent); color: #000; border-color: var(--accent); transform: scale(0.9);
+        }
+        .rotating { animation: spin 0.6s linear; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* LOADER */
-        .loader { position: fixed; top: 0; left: 0; height: 3px; background: var(--accent); width: 0%; transition: width 0.3s; z-index: 99; }
+        /* IFRAME */
+        .portal-container {
+            flex-grow: 1;
+            width: 100%;
+            position: relative;
+            background: #000;
+        }
 
-        @media (max-width: 600px) { .grid { grid-template-columns: 1fr 1fr; } .chart-container { height: 180px; } }
+        iframe { width: 100%; height: 100%; border: none; display: block; }
+
+        .loader-msg {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            color: #444; font-size: 0.8rem; z-index: -1;
+        }
     </style>
 </head>
 <body>
 
-    <div id="loader" class="loader"></div>
-
     <header>
-        <div class="brand"><h1>NERD<span>MINER</span></h1></div>
-        <div class="clock" id="clock">--:--</div>
+        <div class="brand-group">
+            <div class="brand"><h1>NERD<span>MINER</span></h1></div>
+            <div class="btc-price">BTC: <span id="btcVal">...</span> $</div>
+        </div>
+        
+        <button id="refreshBtn" class="btn-reload" onclick="forceRefresh()">↻</button>
     </header>
 
-    <div class="ticker-card">
-        <div>
-            <div class="ticker-label">Bitcoin Price</div>
-            <div class="ticker-price" id="btcPrice">-- €</div>
-        </div>
-        <div id="btcChange" class="ticker-change">--%</div>
+    <div class="portal-container">
+        <div class="loader-msg">Connexion au satellite...</div>
+        <iframe id="myFrame" src="" allow="fullscreen"></iframe>
+    </div>
+
+    <script>
+        // CONFIGURATION
+        const myAddress = "bc1pns5myh0qlfl3wyzed4rqy86c6p26fv5z9g0qr7ne74rc3kaa7a4sjn0rlf";
+        const targetUrl = `https://web.public-pool.io/#/app/${myAddress}`;
+
+        // 1. Lancer l'Iframe
+        const iframe = document.getElementById('myFrame');
+        iframe.src = targetUrl;
+
+        // 2. Fonction Refresh
+        function forceRefresh() {
+            const btn = document.getElementById('refreshBtn');
+            btn.classList.add('rotating');
+            
+            iframe.src = 'about:blank';
+            setTimeout(() => { iframe.src = targetUrl; }, 100);
+
+            setTimeout(() => { btn.classList.remove('rotating'); }, 600);
+        }
+
+        // 3. Récupérer le prix du BTC en USD
+        async function getBTC() {
+            try {
+                // Changement ici : vs_currencies=usd
+                const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
+                const data = await res.json();
+                // Formatage en Anglais pour avoir la virgule au bon endroit (ex: 90,000)
+                document.getElementById('btcVal').innerText = data.bitcoin.usd.toLocaleString('en-US');
+            } catch(e) {}
+        }
+        getBTC();
+    </script>
+
+</body>
+</html>
