@@ -2,98 +2,208 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>NerdMiner • Rémi</title>
     
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⛏️</text></svg>">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%25%22 height=%22100%25%22 fill=%22%2309090b%22/><text x=%2250%25%22 y=%2255%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-size=%2270%22>⛏️</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><path d=%22M50 5 L90 25 L90 75 L50 95 L10 75 L10 25 Z%22 fill=%22none%22 stroke=%22%23FFAD00%22 stroke-width=%225%22/><path d=%22M50 25 L70 35 L50 45 L30 35 Z%22 fill=%22%23FFAD00%22/></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%25%22 height=%22100%25%22 fill=%22%2309090b%22/><path d=%22M50 15 L85 32 L85 68 L50 85 L15 68 L15 32 Z%22 fill=%22none%22 stroke=%22%23FFAD00%22 stroke-width=%226%22/><path d=%22M50 35 L70 45 L50 55 L30 45 Z%22 fill=%22%23FFAD00%22/></svg>">
 
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#09090b">
+    <meta name="theme-color" content="#000000">
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     
     <style>
-        /* --- DESIGN SYSTEM V27 (USD Edition) --- */
+        /* --- DESIGN SYSTEM V55 --- */
         :root {
-            --bg-dark: #09090b;
+            --bg: #000000;
             --accent: #FFAD00;
-            --glass-bg: rgba(20, 20, 20, 0.95);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --header-height: 60px;
-            --success: #32d74b;
-            --danger: #ff453a;
+            --btn-grad: linear-gradient(135deg, #FFAD00, #ff8c00);
+            --border: rgba(255, 255, 255, 0.15);
+            --header-height: 54px;
+            --info-height: 50px;
+            --safe-top: env(safe-area-inset-top);
         }
 
         body {
-            background-color: var(--bg-dark);
-            margin: 0; height: 100vh; display: flex; flex-direction: column;
-            overflow: hidden; font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            margin: 0; height: 100vh;
+            display: flex; flex-direction: column;
+            overflow: hidden; font-family: 'Inter', sans-serif; color: #fff;
         }
 
         /* HEADER */
         header {
             height: var(--header-height);
-            background: rgba(10,10,10,0.9);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--accent);
+            background: rgba(10, 10, 10, 0.95);
+            border-bottom: 1px solid var(--border);
             display: flex; align-items: center; justify-content: space-between;
-            padding: 0 15px; z-index: 100; flex-shrink: 0;
+            padding: var(--safe-top) 15px 0 15px; z-index: 100; flex-shrink: 0;
         }
-
-        .brand-group { display: flex; flex-direction: column; justify-content: center; }
-        .brand h1 { color: #fff; font-size: 1.1rem; margin: 0; font-weight: 900; letter-spacing: -0.5px; line-height: 1.1;}
+        .brand-group { display: flex; flex-direction: column; }
+        .brand h1 { font-size: 1.2rem; margin: 0; font-weight: 900; letter-spacing: -0.5px; }
         .brand span { color: var(--accent); }
-        
-        /* PRIX BTC HEADER */
-        .btc-ticker { font-size: 0.75rem; color: #fff; font-weight: 600; font-family: monospace; opacity: 0.8; margin-top: 2px; }
-        
-        .header-actions { display: flex; gap: 10px; }
+        .btc-ticker { font-size: 0.75rem; color: #888; font-family: monospace; margin-top: 2px; }
 
-        /* BOUTONS */
+        .header-actions { display: flex; gap: 8px; }
+
         .btn-icon {
-            background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
-            color: #fff; width: 38px; height: 38px; border-radius: 10px;
-            font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center;
-            transition: all 0.2s;
+            background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+            color: #fff; width: 36px; height: 36px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: 0.2s; padding: 0;
         }
-        .btn-icon:active { background: var(--accent); color: #000; transform: scale(0.95); }
-        .btn-tools { border-color: var(--accent); color: var(--accent); }
+        .btn-icon:active { background: var(--accent); border-color: var(--accent); color: #000; transform: scale(0.95); }
+        .btn-icon svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; fill: none; }
 
-        /* IFRAME */
-        .portal-container { flex-grow: 1; width: 100%; position: relative; background: #000; }
+        /* BARRE INFO */
+        .info-bar {
+            height: var(--info-height);
+            background: #050505; border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 15px; font-size: 0.8rem; z-index: 90; flex-shrink: 0;
+        }
+        
+        .weather-block { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .weather-icon-box { font-size: 1.5rem; display: flex; align-items: center; justify-content: center; width: 30px;}
+        .weather-details { display: flex; flex-direction: column; justify-content: center; line-height: 1.1; }
+        .w-top { font-weight: 700; color: #fff; display: flex; gap: 5px; align-items: center; }
+        .w-edit { border-bottom: 1px dotted #555; }
+        .w-update { font-size: 0.6rem; color: #666; font-family: monospace; }
+        
+        .battery-group { 
+            display: flex; align-items: center; gap: 8px; cursor: pointer; 
+            padding: 6px 10px; border-radius: 8px; background: rgba(255,255,255,0.05);
+            border: 1px solid transparent; transition: 0.2s;
+        }
+        .battery-group:active { background: rgba(255,255,255,0.1); border-color: var(--border); }
+        
+        .battery-icon {
+            width: 26px; height: 13px; border: 1px solid #aaa; border-radius: 3px;
+            position: relative; padding: 1px; display: flex; align-items: center;
+        }
+        .battery-icon::after {
+            content: ''; position: absolute; right: -4px; top: 3px;
+            width: 2px; height: 7px; background: #aaa; border-radius: 0 2px 2px 0;
+        }
+        .battery-level {
+            height: 100%; width: 50%; background: var(--accent);
+            border-radius: 1px; transition: width 1s, background 0.5s;
+        }
+        .battery-text { font-family: 'JetBrains Mono', monospace; color: #fff; font-weight: 700; font-size: 0.75rem;}
+
+        /* PORTAL */
+        .portal { flex: 1; width: 100%; background: #000; position: relative; }
         iframe { width: 100%; height: 100%; border: none; display: block; }
 
-        /* --- OVERLAY TOOLS --- */
-        #toolsOverlay {
+        /* OVERLAYS */
+        .overlay-backdrop {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
-            z-index: 200; display: none; opacity: 0; transition: opacity 0.3s;
-            align-items: center; justify-content: center;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
+            z-index: 150; visibility: hidden; opacity: 0; transition: 0.3s;
         }
-        
-        .tools-card {
-            width: 90%; max-width: 400px;
-            background: #151515; border: 1px solid var(--glass-border);
-            border-radius: 24px; padding: 25px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-            transform: translateY(20px); transition: transform 0.3s;
+        .overlay-backdrop.active { visibility: visible; opacity: 1; pointer-events: all; }
+
+        /* MENUS FLOTTANTS */
+        .popup-menu {
+            position: absolute; width: 280px; /* FIXE LARGEUR STANDARD */
+            background: rgba(18, 18, 18, 0.98); backdrop-filter: blur(20px);
+            border: 1px solid var(--border); border-radius: 18px;
+            padding: 20px; box-shadow: 0 25px 50px rgba(0,0,0,0.8);
+            transform: scale(0.95); opacity: 0; visibility: hidden; transition: 0.25s cubic-bezier(0.2, 0.8, 0.2, 1); z-index: 200; transform-origin: top right;
+            box-sizing: border-box; /* Important pour que le padding ne casse pas la largeur */
         }
-
-        .tools-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .tools-title { font-size: 1.2rem; font-weight: 800; color: #fff; }
-        .btn-close { background: none; border: none; color: #888; font-size: 1.5rem; cursor: pointer; }
-
-        .widget { background: rgba(255,255,255,0.03); border-radius: 15px; padding: 15px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.05); }
-        .widget-label { font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
-        .widget-value { font-size: 1.5rem; font-weight: 700; color: #fff; }
+        .popup-menu.open { transform: scale(1); opacity: 1; visibility: visible; }
         
-        .fg-bar { height: 6px; width: 100%; background: #333; border-radius: 3px; margin-top: 10px; overflow: hidden; }
-        .fg-fill { height: 100%; width: 50%; background: #fff; transition: width 1s; }
+        .popup-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
+        .menu-main-title { color: #fff; font-weight: 800; font-size: 1rem; margin: 0; }
         
-        .jackpot-val { color: var(--accent); text-shadow: 0 0 15px rgba(255,173,0,0.3); }
-        .halving-info { font-size: 0.8rem; color: #aaa; margin-top: 5px; }
+        .popup-close { background: none; border: none; color: #888; font-size: 1.2rem; cursor: pointer; padding: 4px; display: flex; border-radius: 50%; transition: 0.2s;}
+        .popup-close:hover { color: #fff; background: rgba(255,255,255,0.1); }
+        .popup-close svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;}
+
+        .control-row { margin-bottom: 15px; position: relative; }
+        .control-label { display: block; color: #aaa; font-size: 0.75rem; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        /* BOUTON STANDARD (ORANGE) */
+        .btn-standard {
+            width: 100%; background: var(--btn-grad); color: #FFFFFF; border: none; padding: 12px;
+            border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 0.85rem;
+            box-shadow: 0 4px 15px rgba(255, 173, 0, 0.3); transition: 0.2s; 
+            display: flex; justify-content: center; align-items: center; text-decoration: none;
+            text-transform: uppercase; letter-spacing: 0.5px;
+            box-sizing: border-box; /* EMPECHE DEPASSEMENT */
+        }
+        .btn-standard:active { transform: scale(0.98); opacity: 0.9; }
+        
+        /* BOUTON LOCAL (GRIS SOMBRE) - CORRIGÉ */
+        .btn-dark {
+            width: 100%; background: #222; border: 1px solid #444; color: #fff; 
+            padding: 10px; /* Moins de padding */
+            border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 0.8rem;
+            text-decoration: none; display: flex; justify-content: center; align-items: center;
+            text-transform: uppercase; letter-spacing: 0.5px; transition: 0.2s;
+            box-sizing: border-box; /* EMPECHE DEPASSEMENT */
+        }
+        .btn-dark:active { background: #333; transform: scale(0.98); }
+
+        .date-input { width: 100%; background: #0a0a0a; border: 1px solid var(--border); color: #fff; padding: 10px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color-scheme: dark; box-sizing: border-box;}
+        .reset-info { font-size: 0.7rem; color: #888; text-align: center; margin-bottom: 15px;}
+
+        .city-input-group { display: flex; gap: 8px; }
+        .city-input { flex: 1; background: #0a0a0a; border: 1px solid var(--border); color: #fff; padding: 10px; border-radius: 8px; font-size: 0.85rem; box-sizing: border-box; outline: none; }
+        
+        .btn-ok { 
+            background: transparent; color: var(--accent); border: 1px solid var(--accent); padding: 0 15px; 
+            border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.2s;
+        }
+        .btn-ok:active { background: rgba(255, 173, 0, 0.1); transform: scale(0.95); }
+
+        .switch-row { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.03); padding: 10px 12px; border-radius: 8px; cursor: pointer; border: 1px solid var(--border);}
+        .switch-label { color: #fff; font-size: 0.85rem; }
+        .toggle-btn { background: #333; width: 44px; height: 24px; border-radius: 12px; position: relative; transition: 0.3s; border: 1px solid #444;}
+        .toggle-btn::after { content:''; position: absolute; left: 2px; top: 2px; width: 18px; height: 18px; background: #aaa; border-radius: 50%; transition: 0.3s; }
+        .toggle-btn.on { background: var(--accent); border-color: var(--accent); }
+        .toggle-btn.on::after { left: 22px; background: #fff; }
+        
+        input[type=range] { width: 100%; accent-color: var(--accent); cursor: grab; margin-top: 5px;}
+
+        /* Positions */
+        #battMenu { top: calc(var(--header-height) + var(--info-height) + 15px + var(--safe-top)); right: 15px; }
+        #localMenu { top: calc(var(--header-height) + 15px + var(--safe-top)); right: 60px; /* Largeur fixée dans .popup-menu */ }
+
+        /* Drawer */
+        .drawer {
+            position: absolute; bottom: 0; left: 0; width: 100%;
+            background: #111; border-top: 1px solid var(--border);
+            border-radius: 24px 24px 0 0; padding: 25px; box-sizing: border-box;
+            transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+            padding-bottom: calc(30px + var(--safe-bottom));
+        }
+        .overlay-backdrop.active .drawer { transform: translateY(0); }
+        .drawer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .drawer-title { font-size: 1.1rem; font-weight: 800; }
+        .widget { background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.05); }
+        .w-title { font-size: 0.7rem; color: #888; text-transform: uppercase; }
+        .w-val { font-size: 1.4rem; font-weight: 700; color: #fff; margin-top: 2px; }
+        .w-accent { color: var(--accent); text-shadow: 0 0 20px rgba(255, 173, 0, 0.15); }
+        .btn-close { background: none; border: none; color: #fff; cursor: pointer; padding: 5px; }
+        .btn-close svg { width: 24px; height: 24px; stroke: currentColor; stroke-width: 2; }
+        
+        .spin { animation: spin 1s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .blink { animation: blink 0.5s ease-in-out; }
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+        
+        #searchResults {
+            position: absolute; top: 100%; left: 0; width: 100%; margin-top: 5px;
+            background: #1a1a1a; border: 1px solid var(--border); border-radius: 8px;
+            max-height: 150px; overflow-y: auto; z-index: 210;
+            display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .search-item { padding: 12px; border-bottom: 1px solid #2a2a2a; font-size: 0.85rem; cursor: pointer; }
+        .search-item:hover { background: #2a2a2a; color: var(--accent); }
     </style>
 </head>
 <body>
@@ -104,110 +214,297 @@
             <div class="btc-ticker" id="headerPrice">$...</div>
         </div>
         <div class="header-actions">
-            <button class="btn-icon btn-tools" onclick="openTools()">⚡</button>
-            <button class="btn-icon" onclick="reloadIframe()">↻</button>
+            <button class="btn-icon" id="btnLocal" onclick="event.stopPropagation(); toggleLocalMenu()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>
+            </button>
+            <button class="btn-icon" id="btnMarket" onclick="event.stopPropagation(); toggleDrawer()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+            </button>
+            <button class="btn-icon" id="refreshBtn" onclick="reloadIframe()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"></path><path d="M1 20v-6h6"></path><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+            </button>
         </div>
     </header>
 
-    <div id="toolsOverlay">
-        <div class="tools-card" id="toolsCard">
-            <div class="tools-header">
-                <div class="tools-title">Market Tools ($)</div>
-                <button class="btn-close" onclick="closeTools()">×</button>
+    <div class="info-bar">
+        <div class="weather-block" onclick="event.stopPropagation(); toggleBattMenu()">
+            <div class="weather-icon-box" id="wIcon">
+                <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10" stroke-dasharray="10"/></svg>
             </div>
-
-            <div class="widget">
-                <div class="widget-label">Fear & Greed Index</div>
-                <div class="widget-value" id="fgValue">--</div>
-                <div class="fg-bar"><div id="fgFill" class="fg-fill"></div></div>
-                <div style="font-size:0.8rem; margin-top:5px; color:#aaa;" id="fgText">Chargement...</div>
+            <div class="weather-details">
+                <div class="w-top"><span id="wTemp">--°</span> <span id="wCity" class="w-edit">Lille</span></div>
+                <div class="w-update" id="wUpdate">MAJ --:--</div>
             </div>
-
-            <div class="widget">
-                <div class="widget-label">Jackpot (Bloc Reward)</div>
-                <div class="widget-value jackpot-val" id="jackpotValue">-- $</div>
-                <div style="font-size:0.8rem; color:#666;">Si tu trouves le bloc (3.125 BTC)</div>
-            </div>
-
-            <div class="widget">
-                <div class="widget-label">Prochain Halving</div>
-                <div class="widget-value">2028</div>
-                <div class="halving-info">Dans ~1200 jours</div>
-                <div class="fg-bar"><div class="fg-fill" style="width: 25%; background: var(--accent);"></div></div>
-            </div>
+        </div>
+        
+        <div class="battery-group" onclick="event.stopPropagation(); toggleBattMenu()">
+            <span class="battery-text" id="battPct">100%</span>
+            <div class="battery-icon"><div id="battBar" class="battery-level"></div></div>
         </div>
     </div>
 
-    <div class="portal-container">
+    <div class="portal">
         <iframe id="myFrame" src="" allow="fullscreen"></iframe>
+    </div>
+
+    <div id="localMenu" class="popup-menu">
+        <div class="popup-header">
+            <div class="menu-main-title">Accès Local</div>
+            <button class="popup-close" onclick="toggleLocalMenu()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+        </div>
+        <div class="control-row">
+            <label class="control-label">IP DU NERDMINER</label>
+            <input type="text" id="localIpInput" class="city-input" value="192.168.1.49" onchange="saveIp(this.value)">
+        </div>
+        <a id="localLink" href="http://192.168.1.49" target="_blank" class="btn-dark">
+            OUVRIR L'INTERFACE
+        </a>
+    </div>
+
+    <div id="battMenu" class="popup-menu">
+        <div class="popup-header">
+            <div class="menu-main-title">Gestion Énergie</div>
+            <button class="popup-close" onclick="toggleBattMenu()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+        </div>
+        
+        <button class="btn-standard" onclick="resetBattery()">
+            JE VIENS DE RECHARGER (100%)
+        </button>
+        
+        <div class="control-row">
+            <label class="control-label">Ou corriger heure recharge :</label>
+            <input type="datetime-local" id="chargeInput" class="date-input" onchange="updateChargeTime(this.value)">
+        </div>
+        <div class="reset-info">Autonomie estimée : <span id="uptimeHours" style="color:#fff; font-weight:700;">0</span>h</div>
+        
+        <div class="control-row">
+            <label class="control-label">Ville Météo (Solaire)</label>
+            <div class="city-input-group">
+                <input type="text" id="cityInput" class="city-input" placeholder="ex: Willems" onkeyup="searchCity(this.value)">
+                <button class="btn-ok" id="btnCity" onclick="saveCity()">OK</button>
+                <div id="searchResults"></div>
+            </div>
+        </div>
+
+        <div class="control-row">
+            <div class="switch-row" onclick="toggleScreen()">
+                <span class="switch-label">Écran (LED) Allumé</span>
+                <div id="screenToggle" class="toggle-btn on"></div>
+            </div>
+        </div>
+        
+        <div class="control-row">
+            <label class="control-label">Calibrage</label>
+            <input type="range" id="calibSlider" min="-20" max="20" value="0" oninput="updateOffset(this.value)">
+            <div style="font-size:0.7rem; color:#888; text-align:right; margin-top:2px;">Offset: <span id="offsetVal" style="color:#fff;">+0</span>%</div>
+        </div>
+    </div>
+
+    <div id="drawerOverlay" class="overlay-backdrop" onclick="toggleDrawer()">
+        <div class="drawer" onclick="event.stopPropagation()">
+            <div class="drawer-header">
+                <span class="drawer-title">Market Tools ($)</span>
+                <button class="btn-close" onclick="toggleDrawer()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <div class="widget">
+                <div class="w-title">Jackpot (3.125 BTC)</div>
+                <div class="w-val w-accent" id="jackpotVal">Calcul...</div>
+            </div>
+            <div class="widget">
+                <div class="w-title">Fear & Greed Index</div>
+                <div class="w-val" id="fgVal">--</div>
+            </div>
+            <div class="widget">
+                <div class="w-title">Prochain Halving</div>
+                <div class="w-val">2028</div>
+            </div>
+        </div>
     </div>
 
     <script>
         const myAddress = "bc1pns5myh0qlfl3wyzed4rqy86c6p26fv5z9g0qr7ne74rc3kaa7a4sjn0rlf";
         const targetUrl = `https://web.public-pool.io/#/app/${myAddress}`;
         const iframe = document.getElementById('myFrame');
-        
         iframe.src = targetUrl;
 
-        // --- GESTION MENU ---
-        function openTools() {
-            const ol = document.getElementById('toolsOverlay');
-            const card = document.getElementById('toolsCard');
-            ol.style.display = 'flex';
-            setTimeout(() => { ol.style.opacity = '1'; card.style.transform = 'translateY(0)'; }, 10);
-            fetchMarketData();
+        // INIT
+        let savedCity = localStorage.getItem('user_city') || "Lille";
+        let lastCharge = parseInt(localStorage.getItem('last_charge_ts'));
+        if(!lastCharge || isNaN(lastCharge)) {
+            lastCharge = new Date().getTime();
+            localStorage.setItem('last_charge_ts', lastCharge);
         }
+        let isScreenOn = true;
+        let userOffset = 0;
+        let currentCode = 0; let currentIsDay = 1;
+        let savedIp = localStorage.getItem('local_ip') || "192.168.1.49";
 
-        function closeTools() {
-            const ol = document.getElementById('toolsOverlay');
-            const card = document.getElementById('toolsCard');
-            ol.style.opacity = '0';
-            card.style.transform = 'translateY(20px)';
-            setTimeout(() => { ol.style.display = 'none'; }, 300);
+        document.getElementById('cityInput').value = savedCity;
+        document.getElementById('wCity').innerText = savedCity;
+        document.getElementById('localIpInput').value = savedIp;
+        document.getElementById('localLink').href = "http://" + savedIp;
+        
+        // SVG ICONS DATA
+        const svgs = {
+            sun: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>',
+            cloud: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg>',
+            rain: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="16" y1="13" x2="16" y2="21"></line><line x1="8" y1="13" x2="8" y2="21"></line><line x1="12" y1="15" x2="12" y2="23"></line><path d="M20 16.58A5 5 0 0 0 18 7h-1.26A8 8 0 1 0 4 15.25"></path></svg>',
+            moon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>'
+        };
+
+        syncDateInput();
+
+        // CLICK HANDLERS
+        document.addEventListener('click', function(event) {
+            const battMenu = document.getElementById('battMenu');
+            const localMenu = document.getElementById('localMenu');
+            const drawer = document.getElementById('drawerOverlay');
+            if (battMenu.classList.contains('open') && !battMenu.contains(event.target)) closeAll();
+            if (localMenu.classList.contains('open') && !localMenu.contains(event.target)) closeAll();
+            if (drawer.classList.contains('active') && !drawer.querySelector('.drawer').contains(event.target)) closeAll();
+        });
+
+        function toggleBattMenu() { closeAll(); document.getElementById('battMenu').classList.add('open'); }
+        function toggleLocalMenu() { closeAll(); document.getElementById('localMenu').classList.add('open'); }
+        function toggleDrawer() { 
+            const wasActive = document.getElementById('drawerOverlay').classList.contains('active');
+            closeAll();
+            if(!wasActive) { document.getElementById('drawerOverlay').classList.add('active'); updateMarket(); }
         }
-
-        // --- API DATA (USD) ---
-        async function fetchMarketData() {
-            try {
-                // 1. Prix BTC en USD
-                const resPrice = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
-                const dataPrice = await resPrice.json();
-                const btcUsd = dataPrice.bitcoin.usd;
-                
-                // Update Header
-                document.getElementById('headerPrice').innerText = "$" + btcUsd.toLocaleString('en-US');
-
-                // Calcul Jackpot (3.125 BTC) en USD
-                const jackpot = btcUsd * 3.125;
-                document.getElementById('jackpotValue').innerText = jackpot.toLocaleString('en-US', {style:'currency', currency:'USD', maximumFractionDigits:0});
-
-                // 2. Fear & Greed
-                const resFG = await fetch('https://api.alternative.me/fng/');
-                const dataFG = await resFG.json();
-                const score = dataFG.data[0].value;
-                const classification = dataFG.data[0].value_classification;
-
-                document.getElementById('fgValue').innerText = score + "/100";
-                document.getElementById('fgText').innerText = classification;
-                
-                const fill = document.getElementById('fgFill');
-                fill.style.width = score + "%";
-                if(score < 25) fill.style.background = "#ff453a"; 
-                else if(score > 75) fill.style.background = "#32d74b"; 
-                else fill.style.background = "#FFAD00";
-
-            } catch(e) { console.log("Erreur API"); }
-        }
-
-        function reloadIframe() {
-            iframe.src = 'about:blank';
-            setTimeout(() => { iframe.src = targetUrl; }, 50);
+        function closeAll() {
+            document.getElementById('battMenu').classList.remove('open');
+            document.getElementById('localMenu').classList.remove('open');
+            document.getElementById('drawerOverlay').classList.remove('active');
+            document.getElementById('searchResults').style.display = 'none';
         }
         
-        fetchMarketData(); // Lancement au démarrage pour le header
-        setInterval(fetchMarketData, 60000); // Mise à jour auto chaque minute
+        function reloadIframe() { 
+            const btn = document.getElementById('refreshBtn');
+            btn.querySelector('svg').classList.add('spin');
+            iframe.src = 'about:blank'; setTimeout(() => iframe.src = targetUrl, 50); 
+            setTimeout(() => btn.querySelector('svg').classList.remove('spin'), 1000); 
+        }
+
+        function saveIp(val) { localStorage.setItem('local_ip', val); document.getElementById('localLink').href = "http://" + val; }
+
+        // --- BATTERY ---
+        function getLocalISOString(ts) {
+            const d = new Date(ts);
+            const pad = (n) => n < 10 ? '0' + n : n;
+            return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate()) + 'T' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+        }
+        function syncDateInput() { if(lastCharge) document.getElementById('chargeInput').value = getLocalISOString(lastCharge); }
+        function resetBattery() { lastCharge = new Date().getTime(); saveAndCalc(); alert("Batterie réinitialisée à 100%"); }
+        function updateChargeTime(val) { if(val) { lastCharge = new Date(val).getTime(); saveAndCalc(); } }
+        function saveAndCalc() { localStorage.setItem('last_charge_ts', lastCharge); syncDateInput(); calcBattery(); }
+
+        function calcBattery() {
+            const now = new Date().getTime();
+            let diffMs = now - lastCharge; if(diffMs<0) diffMs=0;
+            const uptimeHours = diffMs / (1000*60*60);
+            document.getElementById('uptimeHours').innerText = uptimeHours.toFixed(1);
+
+            let drain = 4.5; 
+            if(isScreenOn) drain += 1.5;
+            let gain = 0;
+            if(currentIsDay) {
+                if(currentCode <= 1) gain = 3.0; 
+                else if(currentCode <= 3) gain = 0.5; 
+            }
+            let finalDrain = drain - gain; if(finalDrain<0) finalDrain=0;
+            
+            let level = 100 - (uptimeHours * finalDrain);
+            level += userOffset;
+            if(level>100) level=100; if(level<0) level=0;
+            
+            level = Math.round(level);
+            document.getElementById('battPct').innerText = level + "%";
+            document.getElementById('battBar').style.width = level + "%";
+            const bar = document.getElementById('battBar');
+            if(level > 60) bar.style.background = "#32d74b"; else if(level > 20) bar.style.background = "#FFAD00"; else bar.style.background = "#ff453a";
+        }
+        function updateOffset(val) { userOffset = parseInt(val); document.getElementById('offsetVal').innerText = (userOffset>0?"+":"")+userOffset; calcBattery(); }
+
+        // --- SEARCH ---
+        let searchTimeout;
+        async function searchCity(query) {
+            const resultsBox = document.getElementById('searchResults');
+            if(query.length < 3) { resultsBox.style.display = 'none'; return; }
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(async () => {
+                try {
+                    const res = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${query}&count=5&language=fr&format=json`);
+                    const data = await res.json();
+                    if(data.results) {
+                        resultsBox.innerHTML = ""; resultsBox.style.display = 'block';
+                        data.results.forEach(city => {
+                            const div = document.createElement('div'); div.className = "search-item";
+                            div.innerText = `${city.name}, ${city.country || ''}`;
+                            div.onclick = () => selectCity(city); resultsBox.appendChild(div);
+                        });
+                    } else resultsBox.style.display = 'none';
+                } catch(e) {}
+            }, 500); 
+        }
+        function selectCity(city) {
+            localStorage.setItem('user_city', city.name); localStorage.setItem('user_lat', city.latitude); localStorage.setItem('user_lon', city.longitude);
+            document.getElementById('wCity').innerText = city.name; document.getElementById('cityInput').value = city.name;
+            document.getElementById('searchResults').style.display = 'none'; fetchMeteo(city.latitude, city.longitude);
+        }
+        async function saveCity() { const city = document.getElementById('cityInput').value; searchCity(city); }
+
+        // --- METEO ---
+        async function fetchMeteo(lat, lon) {
+            try {
+                document.getElementById('wIcon').classList.add('blink');
+                const ts = new Date().getTime();
+                const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&_t=${ts}`);
+                const data = await res.json();
+                const w = data.current_weather;
+                currentCode = w.weathercode; currentIsDay = w.is_day;
+                
+                // Set SVG Icon
+                let svg = svgs.moon;
+                if(w.is_day) {
+                    if(w.weathercode <= 1) svg = svgs.sun;
+                    else if(w.weathercode <= 3) svg = svgs.cloud;
+                    else svg = svgs.rain;
+                }
+                document.getElementById('wIcon').innerHTML = svg;
+                document.getElementById('wTemp').innerText = Math.round(w.temperature) + "°";
+                
+                const now = new Date();
+                document.getElementById('wUpdate').innerText = "MAJ " + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
+                
+                calcBattery();
+            } catch(e) {}
+        }
+        function updateWeather() { let lat = localStorage.getItem('user_lat') || 50.6292; let lon = localStorage.getItem('user_lon') || 3.0573; fetchMeteo(lat, lon); }
+        function toggleScreen() { isScreenOn = !isScreenOn; document.getElementById('screenToggle').classList.toggle('on'); calcBattery(); }
+
+        // --- MARKET ---
+        async function updateMarket() {
+            try {
+                const res = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT');
+                const data = await res.json();
+                const price = parseFloat(data.price);
+                document.getElementById('headerPrice').innerText = "$" + price.toLocaleString('en-US', {maximumFractionDigits:0});
+                document.getElementById('jackpotVal').innerText = "$" + (price * 3.125).toLocaleString('en-US', {maximumFractionDigits:0});
+                const resFg = await fetch('https://api.alternative.me/fng/'); const dFg = await resFg.json();
+                document.getElementById('fgVal').innerText = dFg.data[0].value + "/100";
+            } catch(e) {}
+        }
+
+        // START
+        updateWeather(); updateMarket(); calcBattery();
+        setInterval(calcBattery, 60000); setInterval(updateWeather, 600000); setInterval(updateMarket, 30000);
 
     </script>
-
 </body>
 </html>
