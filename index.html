@@ -12,26 +12,30 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#000000">
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     
     <style>
-        /* --- DESIGN SYSTEM V71 --- */
+        /* --- DESIGN SYSTEM V72 --- */
         :root {
             --bg: #000000;
             --accent: #FFAD00;
             --power: #32ADE6;
+            --btn-grad: linear-gradient(135deg, #FFAD00, #ff8c00);
             --border: rgba(255, 255, 255, 0.15);
-            --header-height: 54px;
-            --info-height: 50px;
+            --header-height: 50px;
+            --info-height: 44px;
             --safe-top: env(safe-area-inset-top);
             --safe-bottom: env(safe-area-inset-bottom);
         }
 
         body {
             background-color: var(--bg);
-            margin: 0; height: 100vh;
+            margin: 0; 
+            /* Fix pour mobile : utilise dvh (dynamic viewport height) */
+            height: 100dvh; 
             display: flex; flex-direction: column;
             overflow: hidden; font-family: 'Inter', sans-serif; color: #fff;
+            font-size: 14px;
         }
 
         /* HEADER */
@@ -43,7 +47,7 @@
             padding: var(--safe-top) 15px 0 15px; z-index: 100; flex-shrink: 0;
         }
         .brand-group { display: flex; flex-direction: column; }
-        .brand h1 { font-size: 1.2rem; margin: 0; font-weight: 900; letter-spacing: -0.5px; }
+        .brand h1 { font-size: 1.1rem; margin: 0; font-weight: 800; letter-spacing: -0.5px; }
         .brand span { color: var(--accent); }
         .btc-ticker { font-size: 0.75rem; color: #888; font-family: monospace; margin-top: 2px; }
 
@@ -51,12 +55,12 @@
 
         .btn-icon {
             background: rgba(255,255,255,0.05); border: 1px solid var(--border);
-            color: #fff; width: 36px; height: 36px; border-radius: 10px;
+            color: #fff; width: 34px; height: 34px; border-radius: 8px;
             display: flex; align-items: center; justify-content: center;
             cursor: pointer; transition: 0.2s; padding: 0;
         }
         .btn-icon:active { background: var(--accent); border-color: var(--accent); color: #000; transform: scale(0.95); }
-        .btn-icon svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; fill: none; pointer-events: none; }
+        .btn-icon svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 2; fill: none; pointer-events: none; }
 
         /* BARRE INFO */
         .info-bar {
@@ -66,27 +70,27 @@
             padding: 0 15px; font-size: 0.8rem; z-index: 90; flex-shrink: 0;
         }
         
-        .weather-block { display: flex; align-items: center; gap: 10px; cursor: pointer; }
-        .weather-icon-box { font-size: 1.5rem; display: flex; align-items: center; justify-content: center; width: 30px;}
+        .weather-block { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+        .weather-icon-box { font-size: 1.4rem; display: flex; align-items: center; justify-content: center; width: 24px;}
         .weather-details { display: flex; flex-direction: column; justify-content: center; line-height: 1.1; }
-        .w-top { font-weight: 700; color: #fff; display: flex; gap: 5px; align-items: center; }
+        .w-top { font-weight: 700; color: #fff; display: flex; gap: 5px; align-items: center; font-size: 0.85rem;}
         .w-edit { border-bottom: 1px dotted #555; }
-        .w-update { font-size: 0.6rem; color: #666; font-family: monospace; }
+        .w-update { font-size: 0.65rem; color: #666; font-family: monospace; }
         
         .battery-group { 
             display: flex; align-items: center; gap: 8px; cursor: pointer; 
-            padding: 6px 10px; border-radius: 8px; background: rgba(255,255,255,0.05);
+            padding: 4px 8px; border-radius: 6px; background: rgba(255,255,255,0.05);
             border: 1px solid transparent; transition: 0.2s;
         }
         .battery-group:active { background: rgba(255,255,255,0.1); border-color: var(--border); }
         
         .battery-icon {
-            width: 26px; height: 13px; border: 1px solid #aaa; border-radius: 3px;
+            width: 24px; height: 12px; border: 1px solid #aaa; border-radius: 2px;
             position: relative; padding: 1px; display: flex; align-items: center;
         }
         .battery-icon::after {
-            content: ''; position: absolute; right: -4px; top: 3px;
-            width: 2px; height: 7px; background: #aaa; border-radius: 0 2px 2px 0;
+            content: ''; position: absolute; right: -3px; top: 2px;
+            width: 2px; height: 6px; background: #aaa; border-radius: 0 2px 2px 0;
         }
         .battery-level {
             height: 100%; width: 50%; background: var(--accent);
@@ -94,15 +98,26 @@
         }
         .battery-text { font-family: 'JetBrains Mono', monospace; color: #fff; font-weight: 700; font-size: 0.75rem;}
 
-        /* Mode Secteur */
+        /* Mode Secteur Actif */
         .mains-mode .battery-level { background: var(--power) !important; width: 100% !important; }
         .mains-mode .battery-icon { border-color: var(--power); }
         .mains-mode .battery-icon::after { background: var(--power); }
         .mains-mode .battery-text { color: var(--power); }
 
-        /* PORTAL */
-        .portal { flex: 1; width: 100vw; background: #000; position: relative; overflow: hidden; }
-        iframe { width: 100%; height: 100%; border: none; display: block; min-width: 100vw; }
+        /* PORTAL & IFRAME (Optimisé) */
+        .portal { 
+            flex: 1; 
+            width: 100%; 
+            background: #000; 
+            position: relative; 
+            overflow: hidden; /* Empêche le double scroll */
+        }
+        iframe { 
+            width: 100%; 
+            height: 100%; 
+            border: none; 
+            display: block; 
+        }
 
         /* OVERLAYS */
         .overlay-backdrop {
@@ -112,7 +127,7 @@
         }
         .overlay-backdrop.active { visibility: visible; opacity: 1; pointer-events: all; }
 
-        /* POPUPS */
+        /* MENUS RESPONSIVE */
         .popup-menu {
             position: absolute; background: rgba(18, 18, 18, 0.98); 
             border: 1px solid var(--border); padding: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.9);
@@ -120,31 +135,39 @@
             transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.3s;
             opacity: 0; visibility: hidden;
         }
+        
         @media (min-width: 600px) {
             .popup-menu { width: 300px; border-radius: 18px; top: 80px; right: 20px; transform: scale(0.95); transform-origin: top right; }
             .popup-menu.open { transform: scale(1); opacity: 1; visibility: visible; }
         }
         @media (max-width: 599px) {
             .popup-menu {
-                width: 100%; bottom: 0; left: 0; border-radius: 24px 24px 0 0;
+                width: 100%; bottom: 0; left: 0; border-radius: 20px 20px 0 0;
                 border-bottom: none; border-left: none; border-right: none;
                 transform: translateY(100%); padding-bottom: calc(20px + var(--safe-bottom));
             }
             .popup-menu.open { transform: translateY(0); opacity: 1; visibility: visible; }
         }
         
-        .popup-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
-        .menu-main-title { color: #fff; font-weight: 800; font-size: 1rem; margin: 0; }
-        .popup-close { background: none; border: none; color: #888; width: 32px; height: 32px; cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: 0.2s; }
-        .popup-close svg { width: 24px; height: 24px; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; pointer-events: none;}
+        .popup-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+        .menu-main-title { color: #fff; font-weight: 800; font-size: 0.95rem; margin: 0; text-transform: uppercase; letter-spacing: 0.5px;}
+        
+        .popup-close { 
+            background: none; border: none; color: #888; width: 30px; height: 30px; 
+            cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center;
+            border-radius: 50%; transition: 0.2s;
+        }
+        .popup-close:hover { color: #fff; background: rgba(255,255,255,0.1); }
+        .popup-close svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; pointer-events: none;}
 
         .control-row { margin-bottom: 15px; position: relative; }
-        .control-label { display: block; color: #aaa; font-size: 0.75rem; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+        .control-label { display: block; color: #aaa; font-size: 0.7rem; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
         
+        /* BOUTONS COMPACTS */
         .btn-standard {
             width: 100%; background: var(--btn-grad); color: #FFFFFF; border: none; 
-            padding: 12px; border-radius: 12px; font-weight: 700; cursor: pointer; font-size: 0.85rem;
-            box-shadow: 0 4px 15px rgba(255, 173, 0, 0.3); transition: 0.2s; 
+            padding: 10px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 0.85rem;
+            box-shadow: 0 3px 10px rgba(255, 173, 0, 0.2); transition: 0.2s; 
             display: flex; justify-content: center; align-items: center; text-decoration: none;
             text-transform: uppercase; letter-spacing: 0.5px; box-sizing: border-box;
         }
@@ -152,33 +175,51 @@
         
         .btn-dark {
             width: 100%; background: #222; border: 1px solid #444; color: #fff; 
-            padding: 12px; border-radius: 12px; font-weight: 700; cursor: pointer; font-size: 0.85rem;
+            padding: 10px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 0.8rem;
             text-decoration: none; display: flex; justify-content: center; align-items: center;
             text-transform: uppercase; letter-spacing: 0.5px; transition: 0.2s; box-sizing: border-box;
         }
         .btn-dark:active { background: #333; transform: scale(0.98); }
 
-        .date-input { width: 100%; background: #0a0a0a; border: 1px solid var(--border); color: #fff; padding: 12px; border-radius: 10px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color-scheme: dark; box-sizing: border-box;}
-        .reset-info { font-size: 0.75rem; color: #888; text-align: center; margin-bottom: 20px; font-weight: 500;}
+        .btn-learn {
+            width: 100%; background: rgba(50, 215, 75, 0.1); border: 1px solid #32d74b; color: #32d74b;
+            padding: 10px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 0.8rem;
+            transition: 0.2s; margin-top: 5px;
+        }
+        .btn-learn:active { background: rgba(50, 215, 75, 0.2); }
 
-        .city-input-group { display: flex; gap: 10px; height: 44px; }
-        .city-input { flex: 1; background: #0a0a0a; border: 1px solid var(--border); color: #fff; padding: 0 12px; border-radius: 10px; font-size: 0.9rem; box-sizing: border-box; outline: none; height: 100%; }
-        .btn-ok { background: transparent; color: var(--accent); border: 1px solid var(--accent); padding: 0 20px; border-radius: 10px; font-weight: 700; cursor: pointer; transition: 0.2s; height: 100%; display: flex; align-items: center; font-size: 0.85rem; }
+        .date-input { width: 100%; background: #0a0a0a; border: 1px solid var(--border); color: #fff; padding: 10px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color-scheme: dark; box-sizing: border-box;}
+        .reset-info { font-size: 0.75rem; color: #888; text-align: center; margin-bottom: 15px; font-weight: 500;}
+
+        /* INPUT VILLE & OK */
+        .city-input-group { display: flex; gap: 8px; height: 38px; }
+        .city-input { 
+            flex: 1; background: #0a0a0a; border: 1px solid var(--border); color: #fff; 
+            padding: 0 10px; border-radius: 8px; font-size: 0.85rem; box-sizing: border-box; outline: none; height: 100%;
+        }
+        .btn-ok { 
+            background: transparent; color: var(--accent); border: 1px solid var(--accent); padding: 0 15px; 
+            border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.2s; height: 100%;
+            display: flex; align-items: center; font-size: 0.8rem;
+        }
+        .btn-ok:hover { background: rgba(255, 173, 0, 0.1); }
         .btn-ok:active { transform: scale(0.95); background: rgba(255, 173, 0, 0.2); }
 
-        .switch-row { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.03); padding: 12px 15px; border-radius: 12px; cursor: pointer; border: 1px solid var(--border); margin-bottom: 10px;}
-        .switch-label { color: #fff; font-size: 0.9rem; font-weight: 600; }
-        .toggle-btn { background: #333; width: 44px; height: 24px; border-radius: 12px; position: relative; transition: 0.3s; border: 1px solid #444;}
-        .toggle-btn::after { content:''; position: absolute; left: 2px; top: 2px; width: 18px; height: 18px; background: #aaa; border-radius: 50%; transition: 0.3s; }
+        /* SWITCHS */
+        .switch-row { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.03); padding: 8px 12px; border-radius: 8px; cursor: pointer; border: 1px solid var(--border); margin-bottom: 8px;}
+        .switch-label { color: #fff; font-size: 0.85rem; font-weight: 600; }
+        .toggle-btn { background: #333; width: 40px; height: 22px; border-radius: 11px; position: relative; transition: 0.3s; border: 1px solid #444;}
+        .toggle-btn::after { content:''; position: absolute; left: 2px; top: 2px; width: 16px; height: 16px; background: #aaa; border-radius: 50%; transition: 0.3s; }
         .toggle-btn.on { background: var(--accent); border-color: var(--accent); }
-        .toggle-btn.on::after { left: 22px; background: #fff; }
+        .toggle-btn.on::after { left: 20px; background: #fff; }
+        /* BLUE TOGGLE */
         .toggle-btn.blue-on.on { background: var(--power); border-color: var(--power); }
         
-        input[type=range] { width: 100%; accent-color: var(--accent); cursor: grab; margin-top: 5px;}
+        input[type=range] { width: 100%; accent-color: var(--accent); cursor: grab; margin-top: 5px; height: 6px;}
 
-        .widget { background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.05); }
+        .widget { background: rgba(255,255,255,0.03); padding: 12px; border-radius: 10px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.05); }
         .w-title { font-size: 0.7rem; color: #888; text-transform: uppercase; }
-        .w-val { font-size: 1.4rem; font-weight: 700; color: #fff; margin-top: 2px; }
+        .w-val { font-size: 1.3rem; font-weight: 700; color: #fff; margin-top: 2px; }
         .w-accent { color: var(--accent); text-shadow: 0 0 20px rgba(255, 173, 0, 0.15); }
         
         .spin { animation: spin 1s linear infinite; }
@@ -186,18 +227,32 @@
         .blink { animation: blink 0.5s ease-in-out; }
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
         
-        #searchResults { position: absolute; top: 100%; left: 0; width: 100%; margin-top: 5px; background: #1a1a1a; border: 1px solid var(--border); border-radius: 12px; max-height: 150px; overflow-y: auto; z-index: 210; display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .search-item { padding: 12px; border-bottom: 1px solid #2a2a2a; font-size: 0.9rem; cursor: pointer; }
+        #searchResults {
+            position: absolute; top: 100%; left: 0; width: 100%; margin-top: 5px;
+            background: #1a1a1a; border: 1px solid var(--border); border-radius: 8px;
+            max-height: 150px; overflow-y: auto; z-index: 210;
+            display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .search-item { padding: 10px; border-bottom: 1px solid #2a2a2a; font-size: 0.85rem; cursor: pointer; }
         .search-item:hover { background: #2a2a2a; color: var(--accent); }
         
-        #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: rgba(50, 215, 75, 0.9); color: #000; font-weight: bold; padding: 12px 24px; border-radius: 50px; font-size: 0.85rem; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 300; opacity: 0; visibility: hidden; transition: 0.3s; pointer-events: none; text-align: center; width: 80%;}
+        .learn-box { border: 1px dashed #333; padding: 12px; border-radius: 10px; margin-top: 15px; background: rgba(255,255,255,0.02);}
+        .learn-title { color: #32d74b; font-size: 0.7rem; font-weight: bold; text-transform: uppercase; margin-bottom: 8px;}
+
+        #toast {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            background: rgba(50, 215, 75, 0.95); color: #000; font-weight: bold;
+            padding: 10px 20px; border-radius: 50px; font-size: 0.8rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 300;
+            opacity: 0; visibility: hidden; transition: 0.3s; pointer-events: none; white-space: nowrap;
+        }
         #toast.show { opacity: 1; visibility: visible; bottom: 40px; }
     </style>
 </head>
 <body>
 
     <div id="backdrop" class="overlay-backdrop" onclick="closeAll()"></div>
-    <div id="toast"></div>
+    <div id="toast">Signal de retour : Batterie 100%</div>
 
     <header>
         <div class="brand-group">
@@ -250,23 +305,17 @@
             <label class="control-label">IP NERDMINER</label>
             <input type="text" id="localIpInput" class="city-input" value="192.168.1.49" onchange="saveIp('local_ip', this.value)">
         </div>
-        <a id="localLink" href="http://192.168.1.49" target="_blank" class="btn-dark" style="margin-bottom:20px;">
-            OUVRIR NERDMINER ⛏️
+        <a id="localLink" href="http://192.168.1.49" target="_blank" class="btn-dark" style="margin-bottom:15px;">
+            OUVRIR NERDMINER
         </a>
 
         <div class="control-row">
-            <label class="control-label">IP ULANZI (AWTRIX)</label>
+            <label class="control-label">IP ULANZI</label>
             <input type="text" id="ulanziIpInput" class="city-input" value="192.168.1.198" onchange="saveIp('ulanzi_ip', this.value)">
         </div>
         <a id="ulanziLink" href="http://192.168.1.198" target="_blank" class="btn-dark">
-            OUVRIR ULANZI 👾
+            OUVRIR ULANZI
         </a>
-        
-        <div style="margin-top:15px; border-top:1px solid #333; padding-top:15px;">
-            <button class="btn-standard" onclick="pushStatsToUlanzi()" style="font-size:0.7rem; background:#333; box-shadow:none; border:1px solid #555;">
-                📲 ENVOYER STATS SUR ULANZI
-            </button>
-        </div>
     </div>
 
     <div id="battMenu" class="popup-menu">
@@ -278,24 +327,31 @@
         </div>
         
         <button class="btn-standard" onclick="resetBattery()">
-            JE VIENS DE RECHARGER (100%)
+            JE VIENS DE RECHARGER
         </button>
         
         <div class="control-row">
             <div class="switch-row" onclick="toggleMains()">
-                <span class="switch-label">⚡ Branché sur Secteur</span>
+                <span class="switch-label">Branché sur Secteur</span>
                 <div id="mainsToggle" class="toggle-btn blue-on"></div>
             </div>
         </div>
 
         <div class="control-row">
-            <label class="control-label">Ou corriger heure recharge :</label>
+            <label class="control-label">Ou corriger heure recharge</label>
             <input type="datetime-local" id="chargeInput" class="date-input" onchange="updateChargeTime(this.value)">
         </div>
         <div class="reset-info">Autonomie estimée : <span id="uptimeHours" style="color:#fff; font-weight:700;">0</span>h</div>
+        
+        <div class="learn-box">
+            <div class="learn-title">Apprentissage IA</div>
+            <label class="control-label">Si coupure, à quelle heure ?</label>
+            <input type="datetime-local" id="deathInput" class="date-input">
+            <button class="btn-learn" onclick="learnFromDeath()">CALCULER & MÉMORISER</button>
+        </div>
 
-        <div class="control-row">
-            <label class="control-label">Ville Météo (Solaire)</label>
+        <div class="control-row" style="margin-top:20px;">
+            <label class="control-label">Ville Météo</label>
             <div class="city-input-group">
                 <input type="text" id="cityInput" class="city-input" placeholder="ex: Willems" spellcheck="false" autocomplete="off" onkeyup="searchCity(this.value)">
                 <button class="btn-ok" id="btnCity" onclick="saveCity()">OK</button>
@@ -319,7 +375,7 @@
 
     <div id="drawerMenu" class="popup-menu">
         <div class="popup-header">
-            <span class="menu-main-title">Market Tools ($)</span>
+            <span class="menu-main-title">Market Tools</span>
             <button class="popup-close" onclick="closeAll()">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
@@ -358,12 +414,13 @@
         let savedMains = localStorage.getItem('user_mains_connected');
         let isMainsConnected = (savedMains === 'true');
 
-        // CALIBRAGE FINAL
-        let baseDrain = 9.4; 
+        // CALIBRAGE V72 (11h autonomie)
+        let baseDrain = parseFloat(localStorage.getItem('learned_base_drain')) || 9.0; 
         
         let userOffset = 0;
         let currentCode = 0; let currentIsDay = 1;
         
+        // RECUPERATION IP MULTI
         let savedIpMiner = localStorage.getItem('local_ip') || "192.168.1.49";
         let savedIpUlanzi = localStorage.getItem('ulanzi_ip') || "192.168.1.198";
         let currentBatteryLevel = 100; 
@@ -371,11 +428,13 @@
         document.getElementById('cityInput').value = savedCity;
         document.getElementById('wCity').innerText = savedCity;
         
+        // INPUTS IP
         document.getElementById('localIpInput').value = savedIpMiner;
         document.getElementById('localLink').href = "http://" + savedIpMiner;
         document.getElementById('ulanziIpInput').value = savedIpUlanzi;
         document.getElementById('ulanziLink').href = "http://" + savedIpUlanzi;
         
+        // UI
         if(isScreenOn) document.getElementById('screenToggle').classList.add('on');
         if(isMainsConnected) document.getElementById('mainsToggle').classList.add('on');
         
@@ -417,16 +476,11 @@
             setTimeout(() => btn.querySelector('svg').classList.remove('spin'), 1000); 
         }
 
+        // SAVE IP GENERIQUE
         function saveIp(key, val) { 
             localStorage.setItem(key, val); 
-            if(key === 'local_ip') { 
-                savedIpMiner = val; 
-                document.getElementById('localLink').href = "http://" + val; 
-            }
-            if(key === 'ulanzi_ip') {
-                savedIpUlanzi = val;
-                document.getElementById('ulanziLink').href = "http://" + val;
-            }
+            if(key === 'local_ip') document.getElementById('localLink').href = "http://" + val;
+            if(key === 'ulanzi_ip') document.getElementById('ulanziLink').href = "http://" + val;
         }
 
         function getLocalISOString(ts) {
@@ -450,7 +504,7 @@
                 document.getElementById('uptimeHours').innerText = "Illimitée";
                 document.getElementById('batteryDisplay').classList.add('mains-mode');
                 
-                let theoreticalLevel = 100 - (uptimeHours * (baseDrain + (isScreenOn?2.6:0))); 
+                let theoreticalLevel = 100 - (uptimeHours * (baseDrain + (isScreenOn?3.0:0))); 
                 if(theoreticalLevel <= 0) { resetBattery(); }
                 return;
             } else {
@@ -459,7 +513,7 @@
             }
 
             let drain = baseDrain; 
-            if(isScreenOn) drain += 2.6; 
+            if(isScreenOn) drain += 3.0; // Correction V72
             
             let gain = 0;
             if(currentIsDay) {
@@ -506,57 +560,35 @@
             
             if(!isMainsConnected && currentBatteryLevel <= 0) {
                 resetBattery();
-                showToast("⚡ RETOUR SIGNAL : BATTERIE 100%");
+                showToast();
             }
         }
         
-        function showToast(msg) {
+        function showToast() {
             const t = document.getElementById('toast');
-            t.innerText = msg;
             t.classList.add('show');
             setTimeout(() => t.classList.remove('show'), 3000);
         }
 
-        // --- BRIDGE FONCTION : MINER > ULANZI ---
-        async function pushStatsToUlanzi() {
-            const minerUrl = `http://${savedIpMiner}/api/stats`; // Endpoint standard NerdMiner
-            const ulanziUrl = `http://${savedIpUlanzi}/api/custom?name=nerdminer`;
+        function learnFromDeath() {
+            const deathTimeStr = document.getElementById('deathInput').value;
+            if(!deathTimeStr) { alert("Date invalide"); return; }
+            const deathTime = new Date(deathTimeStr).getTime();
+            const durationMs = deathTime - lastCharge;
+            const durationHours = durationMs / (1000 * 60 * 60);
+            if(durationHours <= 0) { alert("Erreur de date"); return; }
             
-            showToast("🔍 Recherche NerdMiner...");
+            let realDrainPerHour = 100 / durationHours;
+            realDrainPerHour += 1.0; 
+            if(isScreenOn) realDrainPerHour -= 3.0; 
             
-            try {
-                // 1. Récupérer les infos du Miner
-                // Note : Cela ne marche que si le Miner autorise les requêtes (CORS) ou si on est sur le même réseau
-                // Si fetch bloque, c'est une sécurité navigateur.
-                const response = await fetch(minerUrl);
-                if (!response.ok) throw new Error("Miner injoignable");
-                const data = await response.json();
-                
-                const bestDiff = data.best_diff || "0";
-                const hashrate = data.hashrate || "0";
-                
-                // 2. Envoyer à l'Ulanzi
-                const payload = {
-                    "text": `Best: ${bestDiff}`,
-                    "icon": 539, // ID icone Bitcoin
-                    "duration": 10,
-                    "rainbow": true
-                };
-                
-                await fetch(ulanziUrl, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(payload)
-                });
-                
-                showToast("✅ Stats envoyées sur Ulanzi !");
-                
-            } catch (e) {
-                console.error(e);
-                showToast("❌ Erreur : Miner ou Ulanzi injoignable");
-                // Fallback: Si on ne peut pas fetch le miner à cause du CORS, on ne peut pas le faire en pur JS local sans serveur.
-                // Mais on tente le coup !
-            }
+            if(realDrainPerHour < 1) realDrainPerHour = 1;
+            if(realDrainPerHour > 20) realDrainPerHour = 20;
+            
+            baseDrain = realDrainPerHour;
+            localStorage.setItem('learned_base_drain', baseDrain);
+            alert(`Calibré !\nBase conso: ${baseDrain.toFixed(1)}%/h`);
+            calcBattery();
         }
 
         let searchTimeout;
