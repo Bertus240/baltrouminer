@@ -15,10 +15,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     
     <style>
-        /* --- DESIGN SYSTEM V61 --- */
+        /* --- DESIGN SYSTEM V70 --- */
         :root {
             --bg: #000000;
             --accent: #FFAD00;
+            --power: #32ADE6;
             --btn-grad: linear-gradient(135deg, #FFAD00, #ff8c00);
             --border: rgba(255, 255, 255, 0.15);
             --header-height: 54px;
@@ -94,15 +95,15 @@
         }
         .battery-text { font-family: 'JetBrains Mono', monospace; color: #fff; font-weight: 700; font-size: 0.75rem;}
 
+        /* Mode Secteur Actif */
+        .mains-mode .battery-level { background: var(--power) !important; width: 100% !important; }
+        .mains-mode .battery-icon { border-color: var(--power); }
+        .mains-mode .battery-icon::after { background: var(--power); }
+        .mains-mode .battery-text { color: var(--power); }
+
         /* PORTAL & IFRAME */
-        .portal { 
-            flex: 1; width: 100vw; 
-            background: #000; position: relative; overflow: hidden;
-        }
-        iframe { 
-            width: 100%; height: 100%; border: none; display: block; 
-            min-width: 100vw; 
-        }
+        .portal { flex: 1; width: 100vw; background: #000; position: relative; overflow: hidden; }
+        iframe { width: 100%; height: 100%; border: none; display: block; min-width: 100vw; }
 
         /* OVERLAYS */
         .overlay-backdrop {
@@ -120,7 +121,6 @@
             transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.3s;
             opacity: 0; visibility: hidden;
         }
-        
         @media (min-width: 600px) {
             .popup-menu { width: 300px; border-radius: 18px; top: 80px; right: 20px; transform: scale(0.95); transform-origin: top right; }
             .popup-menu.open { transform: scale(1); opacity: 1; visibility: visible; }
@@ -166,30 +166,39 @@
         }
         .btn-dark:active { background: #333; transform: scale(0.98); }
 
+        .btn-learn {
+            width: 100%; background: rgba(50, 215, 75, 0.1); border: 1px solid #32d74b; color: #32d74b;
+            padding: 10px; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 0.8rem;
+            transition: 0.2s; margin-top: 5px;
+        }
+        .btn-learn:active { background: rgba(50, 215, 75, 0.2); }
+
         .date-input { width: 100%; background: #0a0a0a; border: 1px solid var(--border); color: #fff; padding: 12px; border-radius: 10px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color-scheme: dark; box-sizing: border-box;}
         .reset-info { font-size: 0.75rem; color: #888; text-align: center; margin-bottom: 20px; font-weight: 500;}
 
-        /* INPUT VILLE */
+        /* INPUT VILLE & OK */
         .city-input-group { display: flex; gap: 10px; height: 44px; }
         .city-input { 
             flex: 1; background: #0a0a0a; border: 1px solid var(--border); color: #fff; 
             padding: 0 12px; border-radius: 10px; font-size: 0.9rem; box-sizing: border-box; outline: none; height: 100%;
         }
-        /* BOUTON OK RETRAVAILLÉ (Style plus fin) */
         .btn-ok { 
-            background: transparent; color: var(--accent); border: 1px solid var(--accent); 
-            padding: 0 20px; border-radius: 10px; font-weight: 700; cursor: pointer; transition: 0.2s; height: 100%;
+            background: transparent; color: var(--accent); border: 1px solid var(--accent); padding: 0 20px; 
+            border-radius: 10px; font-weight: 700; cursor: pointer; transition: 0.2s; height: 100%;
             display: flex; align-items: center; font-size: 0.85rem;
         }
         .btn-ok:hover { background: rgba(255, 173, 0, 0.1); }
         .btn-ok:active { transform: scale(0.95); background: rgba(255, 173, 0, 0.2); }
 
-        .switch-row { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.03); padding: 12px 15px; border-radius: 12px; cursor: pointer; border: 1px solid var(--border);}
+        /* SWITCHS */
+        .switch-row { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.03); padding: 12px 15px; border-radius: 12px; cursor: pointer; border: 1px solid var(--border); margin-bottom: 10px;}
         .switch-label { color: #fff; font-size: 0.9rem; font-weight: 600; }
         .toggle-btn { background: #333; width: 44px; height: 24px; border-radius: 12px; position: relative; transition: 0.3s; border: 1px solid #444;}
         .toggle-btn::after { content:''; position: absolute; left: 2px; top: 2px; width: 18px; height: 18px; background: #aaa; border-radius: 50%; transition: 0.3s; }
         .toggle-btn.on { background: var(--accent); border-color: var(--accent); }
         .toggle-btn.on::after { left: 22px; background: #fff; }
+        /* BLUE TOGGLE */
+        .toggle-btn.blue-on.on { background: var(--power); border-color: var(--power); }
         
         input[type=range] { width: 100%; accent-color: var(--accent); cursor: grab; margin-top: 5px;}
 
@@ -211,11 +220,24 @@
         }
         .search-item { padding: 12px; border-bottom: 1px solid #2a2a2a; font-size: 0.9rem; cursor: pointer; }
         .search-item:hover { background: #2a2a2a; color: var(--accent); }
+        
+        .learn-box { border: 1px dashed #333; padding: 15px; border-radius: 12px; margin-top: 20px; background: rgba(255,255,255,0.02);}
+        .learn-title { color: #32d74b; font-size: 0.75rem; font-weight: bold; text-transform: uppercase; margin-bottom: 10px;}
+
+        #toast {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            background: rgba(50, 215, 75, 0.9); color: #000; font-weight: bold;
+            padding: 12px 24px; border-radius: 50px; font-size: 0.85rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 300;
+            opacity: 0; visibility: hidden; transition: 0.3s; pointer-events: none;
+        }
+        #toast.show { opacity: 1; visibility: visible; bottom: 40px; }
     </style>
 </head>
 <body>
 
     <div id="backdrop" class="overlay-backdrop" onclick="closeAll()"></div>
+    <div id="toast">⚡ RETOUR SIGNAL : BATTERIE 100%</div>
 
     <header>
         <div class="brand-group">
@@ -229,7 +251,7 @@
             <button class="btn-icon" id="btnMarket" onclick="event.stopPropagation(); toggleDrawer()">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
             </button>
-            <button class="btn-icon" id="refreshBtn" onclick="reloadIframe()">
+            <button class="btn-icon" id="refreshBtn" onclick="smartRefresh()">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"></path><path d="M1 20v-6h6"></path><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
             </button>
         </div>
@@ -246,7 +268,7 @@
             </div>
         </div>
         
-        <div class="battery-group" onclick="event.stopPropagation(); toggleBattMenu()">
+        <div class="battery-group" id="batteryDisplay" onclick="event.stopPropagation(); toggleBattMenu()">
             <span class="battery-text" id="battPct">100%</span>
             <div class="battery-icon"><div id="battBar" class="battery-level"></div></div>
         </div>
@@ -258,17 +280,26 @@
 
     <div id="localMenu" class="popup-menu">
         <div class="popup-header">
-            <div class="menu-main-title">Accès Local</div>
+            <div class="menu-main-title">Mes Appareils</div>
             <button class="popup-close" onclick="closeAll()">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
         </div>
+        
         <div class="control-row">
-            <label class="control-label">IP DU NERDMINER</label>
-            <input type="text" id="localIpInput" class="city-input" value="192.168.1.49" onchange="saveIp(this.value)">
+            <label class="control-label">IP NERDMINER</label>
+            <input type="text" id="localIpInput" class="city-input" value="192.168.1.49" onchange="saveIp('local_ip', this.value)">
         </div>
-        <a id="localLink" href="http://192.168.1.49" target="_blank" class="btn-dark">
-            OUVRIR L'INTERFACE
+        <a id="localLink" href="http://192.168.1.49" target="_blank" class="btn-dark" style="margin-bottom:20px;">
+            OUVRIR NERDMINER ⛏️
+        </a>
+
+        <div class="control-row">
+            <label class="control-label">IP ULANZI (AWTRIX)</label>
+            <input type="text" id="ulanziIpInput" class="city-input" value="192.168.1.198" onchange="saveIp('ulanzi_ip', this.value)">
+        </div>
+        <a id="ulanziLink" href="http://192.168.1.198" target="_blank" class="btn-dark">
+            OUVRIR ULANZI 👾
         </a>
     </div>
 
@@ -285,12 +316,26 @@
         </button>
         
         <div class="control-row">
+            <div class="switch-row" onclick="toggleMains()">
+                <span class="switch-label">⚡ Branché sur Secteur</span>
+                <div id="mainsToggle" class="toggle-btn blue-on"></div>
+            </div>
+        </div>
+
+        <div class="control-row">
             <label class="control-label">Ou corriger heure recharge :</label>
             <input type="datetime-local" id="chargeInput" class="date-input" onchange="updateChargeTime(this.value)">
         </div>
         <div class="reset-info">Autonomie estimée : <span id="uptimeHours" style="color:#fff; font-weight:700;">0</span>h</div>
         
-        <div class="control-row">
+        <div class="learn-box">
+            <div class="learn-title">🧠 Apprentissage IA</div>
+            <label class="control-label">Si coupure, à quelle heure ?</label>
+            <input type="datetime-local" id="deathInput" class="date-input">
+            <button class="btn-learn" onclick="learnFromDeath()">CALCULER & MÉMORISER</button>
+        </div>
+
+        <div class="control-row" style="margin-top:20px;">
             <label class="control-label">Ville Météo (Solaire)</label>
             <div class="city-input-group">
                 <input type="text" id="cityInput" class="city-input" placeholder="ex: Willems" spellcheck="false" autocomplete="off" onkeyup="searchCity(this.value)">
@@ -302,7 +347,7 @@
         <div class="control-row">
             <div class="switch-row" onclick="toggleScreen()">
                 <span class="switch-label">Écran (LED) Allumé</span>
-                <div id="screenToggle" class="toggle-btn on"></div>
+                <div id="screenToggle" class="toggle-btn"></div>
             </div>
         </div>
         
@@ -347,17 +392,36 @@
             lastCharge = new Date().getTime();
             localStorage.setItem('last_charge_ts', lastCharge);
         }
-        let isScreenOn = true;
+        
+        let savedScreenState = localStorage.getItem('user_screen_on');
+        let isScreenOn = (savedScreenState === null) ? false : (savedScreenState === 'true');
+        
+        let savedMains = localStorage.getItem('user_mains_connected');
+        let isMainsConnected = (savedMains === 'true');
+
+        let baseDrain = parseFloat(localStorage.getItem('learned_base_drain')) || 9.4; 
+        
         let userOffset = 0;
         let currentCode = 0; let currentIsDay = 1;
-        let savedIp = localStorage.getItem('local_ip') || "192.168.1.49";
+        
+        // RECUPERATION IP MULTI
+        let savedIpMiner = localStorage.getItem('local_ip') || "192.168.1.49";
+        let savedIpUlanzi = localStorage.getItem('ulanzi_ip') || "192.168.1.198";
+        let currentBatteryLevel = 100; 
 
         document.getElementById('cityInput').value = savedCity;
         document.getElementById('wCity').innerText = savedCity;
-        document.getElementById('localIpInput').value = savedIp;
-        document.getElementById('localLink').href = "http://" + savedIp;
         
-        // SVG ICONS
+        // INPUTS IP
+        document.getElementById('localIpInput').value = savedIpMiner;
+        document.getElementById('localLink').href = "http://" + savedIpMiner;
+        document.getElementById('ulanziIpInput').value = savedIpUlanzi;
+        document.getElementById('ulanziLink').href = "http://" + savedIpUlanzi;
+        
+        // UI
+        if(isScreenOn) document.getElementById('screenToggle').classList.add('on');
+        if(isMainsConnected) document.getElementById('mainsToggle').classList.add('on');
+        
         const svgs = {
             sun: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>',
             cloud: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg>',
@@ -389,7 +453,6 @@
             document.getElementById('backdrop').classList.remove('active');
             document.getElementById('searchResults').style.display = 'none';
         }
-        
         function reloadIframe() { 
             const btn = document.getElementById('refreshBtn');
             btn.querySelector('svg').classList.add('spin');
@@ -397,9 +460,13 @@
             setTimeout(() => btn.querySelector('svg').classList.remove('spin'), 1000); 
         }
 
-        function saveIp(val) { localStorage.setItem('local_ip', val); document.getElementById('localLink').href = "http://" + val; }
+        // SAVE IP GENERIQUE
+        function saveIp(key, val) { 
+            localStorage.setItem(key, val); 
+            if(key === 'local_ip') document.getElementById('localLink').href = "http://" + val;
+            if(key === 'ulanzi_ip') document.getElementById('ulanziLink').href = "http://" + val;
+        }
 
-        // --- BATTERY (CALIBRÉE V60) ---
         function getLocalISOString(ts) {
             const d = new Date(ts);
             const pad = (n) => n < 10 ? '0' + n : n;
@@ -414,10 +481,24 @@
             const now = new Date().getTime();
             let diffMs = now - lastCharge; if(diffMs<0) diffMs=0;
             const uptimeHours = diffMs / (1000*60*60);
-            document.getElementById('uptimeHours').innerText = uptimeHours.toFixed(1);
+            
+            if(isMainsConnected) {
+                document.getElementById('battPct').innerText = "∞";
+                document.getElementById('battBar').style.width = "100%";
+                document.getElementById('uptimeHours').innerText = "Illimitée";
+                document.getElementById('batteryDisplay').classList.add('mains-mode');
+                
+                let theoreticalLevel = 100 - (uptimeHours * (baseDrain + (isScreenOn?2.6:0))); 
+                if(theoreticalLevel <= 0) { resetBattery(); }
+                return;
+            } else {
+                document.getElementById('batteryDisplay').classList.remove('mains-mode');
+                document.getElementById('uptimeHours').innerText = uptimeHours.toFixed(1);
+            }
 
-            let drain = 8.0; // BASE 8% (Wifi)
-            if(isScreenOn) drain += 4.0; // ECRAN 4% (Total 12%)
+            let drain = baseDrain; 
+            if(isScreenOn) drain += 2.6; 
+            
             let gain = 0;
             if(currentIsDay) {
                 if(currentCode <= 1) gain = 3.0; 
@@ -429,15 +510,71 @@
             level += userOffset;
             if(level>100) level=100; if(level<0) level=0;
             
+            currentBatteryLevel = level;
             level = Math.round(level);
+            
             document.getElementById('battPct').innerText = level + "%";
             document.getElementById('battBar').style.width = level + "%";
             const bar = document.getElementById('battBar');
             if(level > 60) bar.style.background = "#32d74b"; else if(level > 20) bar.style.background = "#FFAD00"; else bar.style.background = "#ff453a";
         }
-        function updateOffset(val) { userOffset = parseInt(val); document.getElementById('offsetVal').innerText = (userOffset>0?"+":"")+userOffset; calcBattery(); }
+        function updateOffset(val) { userOffset = parseInt(val); calcBattery(); }
 
-        // --- SEARCH ---
+        function toggleScreen() { 
+            isScreenOn = !isScreenOn; 
+            localStorage.setItem('user_screen_on', isScreenOn); 
+            const btn = document.getElementById('screenToggle');
+            if(isScreenOn) btn.classList.add('on'); else btn.classList.remove('on');
+            calcBattery(); 
+        }
+        function toggleMains() {
+            isMainsConnected = !isMainsConnected;
+            localStorage.setItem('user_mains_connected', isMainsConnected);
+            const btn = document.getElementById('mainsToggle');
+            if(isMainsConnected) btn.classList.add('on'); else btn.classList.remove('on');
+            calcBattery();
+        }
+
+        function smartRefresh() {
+            const btn = document.getElementById('refreshBtn');
+            btn.querySelector('svg').classList.add('spin');
+            iframe.src = 'about:blank'; 
+            setTimeout(() => iframe.src = targetUrl, 50); 
+            setTimeout(() => btn.querySelector('svg').classList.remove('spin'), 1000); 
+            
+            if(!isMainsConnected && currentBatteryLevel <= 0) {
+                resetBattery();
+                showToast();
+            }
+        }
+        
+        function showToast() {
+            const t = document.getElementById('toast');
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 3000);
+        }
+
+        function learnFromDeath() {
+            const deathTimeStr = document.getElementById('deathInput').value;
+            if(!deathTimeStr) { alert("Date invalide"); return; }
+            const deathTime = new Date(deathTimeStr).getTime();
+            const durationMs = deathTime - lastCharge;
+            const durationHours = durationMs / (1000 * 60 * 60);
+            if(durationHours <= 0) { alert("Erreur de date"); return; }
+            
+            let realDrainPerHour = 100 / durationHours;
+            realDrainPerHour += 1.0; 
+            if(isScreenOn) realDrainPerHour -= 2.6; 
+            
+            if(realDrainPerHour < 1) realDrainPerHour = 1;
+            if(realDrainPerHour > 20) realDrainPerHour = 20;
+            
+            baseDrain = realDrainPerHour;
+            localStorage.setItem('learned_base_drain', baseDrain);
+            alert(`Calibré !\nBase conso: ${baseDrain.toFixed(1)}%/h`);
+            calcBattery();
+        }
+
         let searchTimeout;
         async function searchCity(query) {
             const resultsBox = document.getElementById('searchResults');
@@ -465,7 +602,6 @@
         }
         async function saveCity() { const city = document.getElementById('cityInput').value; searchCity(city); }
 
-        // --- METEO ---
         async function fetchMeteo(lat, lon) {
             try {
                 document.getElementById('wIcon').classList.add('blink');
@@ -474,7 +610,6 @@
                 const data = await res.json();
                 const w = data.current_weather;
                 currentCode = w.weathercode; currentIsDay = w.is_day;
-                
                 let svg = svgs.moon;
                 if(w.is_day) {
                     if(w.weathercode <= 1) svg = svgs.sun;
@@ -483,17 +618,13 @@
                 }
                 document.getElementById('wIcon').innerHTML = svg;
                 document.getElementById('wTemp').innerText = Math.round(w.temperature) + "°";
-                
                 const now = new Date();
                 document.getElementById('wUpdate').innerText = "MAJ " + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
-                
                 calcBattery();
             } catch(e) {}
         }
         function updateWeather() { let lat = localStorage.getItem('user_lat') || 50.6292; let lon = localStorage.getItem('user_lon') || 3.0573; fetchMeteo(lat, lon); }
-        function toggleScreen() { isScreenOn = !isScreenOn; document.getElementById('screenToggle').classList.toggle('on'); calcBattery(); }
 
-        // --- MARKET ---
         async function updateMarket() {
             try {
                 const res = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT');
