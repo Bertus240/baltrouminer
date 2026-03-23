@@ -15,7 +15,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     
     <style>
-        /* --- DESIGN SYSTEM V76 --- */
+        /* --- DESIGN SYSTEM V77 - LIGHTWEIGHT --- */
         :root {
             --bg: #000000;
             --accent: #FFAD00;
@@ -98,17 +98,26 @@
         }
         .battery-text { font-family: 'JetBrains Mono', monospace; color: #fff; font-weight: 700; font-size: 0.75rem;}
 
-        /* Mode Secteur Actif */
         .mains-mode .battery-level { background: var(--power) !important; width: 100% !important; }
         .mains-mode .battery-icon { border-color: var(--power); }
         .mains-mode .battery-icon::after { background: var(--power); }
         .mains-mode .battery-text { color: var(--power); }
 
-        /* PORTAL & IFRAME */
-        .portal { flex: 1; width: 100%; background: #000; position: relative; overflow: hidden; }
-        iframe { width: 100%; height: 100%; border: none; display: block; }
+        /* PORTAL & HUB CENTRAL */
+        .portal { 
+            flex: 1; width: 100%; background: #000; position: relative; overflow: hidden; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            padding: 20px; text-align: center; box-sizing: border-box;
+            background: radial-gradient(circle at center, rgba(255,173,0,0.08) 0%, transparent 60%);
+        }
 
-        /* OVERLAYS */
+        .hub-icon {
+            width: 70px; height: 70px; background: rgba(255,173,0,0.1); border-radius: 20px; 
+            display: flex; align-items: center; justify-content: center; margin-bottom: 24px; 
+            border: 1px solid rgba(255,173,0,0.3); box-shadow: 0 10px 30px rgba(255,173,0,0.1);
+        }
+
+        /* OVERLAYS & MENUS */
         .overlay-backdrop {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
@@ -116,7 +125,6 @@
         }
         .overlay-backdrop.active { visibility: visible; opacity: 1; pointer-events: all; }
 
-        /* MENUS RESPONSIVE */
         .popup-menu {
             position: absolute; background: rgba(18, 18, 18, 0.98); 
             border: 1px solid var(--border); padding: 25px; box-shadow: 0 20px 50px rgba(0,0,0,0.9);
@@ -146,21 +154,19 @@
             border-radius: 50%; transition: 0.2s;
         }
         .popup-close:hover { color: #fff; background: rgba(255,255,255,0.1); }
-        .popup-close svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; pointer-events: none;}
+        .popup-close svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; pointer-events: none;}
 
         .control-row { margin-bottom: 18px; position: relative; }
         .control-label { display: block; color: #aaa; font-size: 0.7rem; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
         
-        /* BOUTONS */
         .btn-standard {
-            width: 100%; background: var(--btn-grad); color: #FFFFFF; border: none; 
-            padding: 12px; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 0.9rem;
-            box-shadow: 0 3px 10px rgba(255, 173, 0, 0.2); transition: 0.2s; 
+            width: 100%; background: var(--btn-grad); color: #000; border: none; 
+            padding: 14px; border-radius: 12px; font-weight: 800; cursor: pointer; font-size: 0.9rem;
+            box-shadow: 0 5px 15px rgba(255, 173, 0, 0.2); transition: 0.2s; 
             display: flex; justify-content: center; align-items: center; text-decoration: none;
-            text-transform: uppercase; letter-spacing: 0.5px; box-sizing: border-box;
-            margin-bottom: 20px;
+            text-transform: uppercase; letter-spacing: 0.5px; box-sizing: border-box; margin-bottom: 20px;
         }
-        .btn-standard:active { transform: scale(0.98); opacity: 0.9; }
+        .btn-standard:active { transform: scale(0.96); box-shadow: 0 2px 5px rgba(255, 173, 0, 0.2); }
         
         .btn-dark {
             width: 100%; background: #222; border: 1px solid #444; color: #fff; 
@@ -173,28 +179,17 @@
         .date-input { width: 100%; background: #0a0a0a; border: 1px solid var(--border); color: #fff; padding: 12px; border-radius: 10px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color-scheme: dark; box-sizing: border-box;}
         .reset-info { font-size: 0.75rem; color: #888; text-align: center; margin-bottom: 15px; font-weight: 500;}
 
-        /* INPUT VILLE & OK */
         .city-input-group { display: flex; gap: 8px; height: 42px; }
-        .city-input { 
-            flex: 1; background: #0a0a0a; border: 1px solid var(--border); color: #fff; 
-            padding: 0 12px; border-radius: 10px; font-size: 0.9rem; box-sizing: border-box; outline: none; height: 100%;
-        }
-        .btn-ok { 
-            background: transparent; color: var(--accent); border: 1px solid var(--accent); padding: 0 18px; 
-            border-radius: 10px; font-weight: 700; cursor: pointer; transition: 0.2s; height: 100%;
-            display: flex; align-items: center; font-size: 0.85rem;
-        }
-        .btn-ok:hover { background: rgba(255, 173, 0, 0.1); }
+        .city-input { flex: 1; background: #0a0a0a; border: 1px solid var(--border); color: #fff; padding: 0 12px; border-radius: 10px; font-size: 0.9rem; box-sizing: border-box; outline: none; height: 100%; }
+        .btn-ok { background: transparent; color: var(--accent); border: 1px solid var(--accent); padding: 0 18px; border-radius: 10px; font-weight: 700; cursor: pointer; transition: 0.2s; height: 100%; display: flex; align-items: center; font-size: 0.85rem; }
         .btn-ok:active { transform: scale(0.95); background: rgba(255, 173, 0, 0.2); }
 
-        /* SWITCHS */
         .switch-row { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.03); padding: 12px 15px; border-radius: 10px; cursor: pointer; border: 1px solid var(--border); margin-bottom: 12px;}
         .switch-label { color: #fff; font-size: 0.9rem; font-weight: 600; }
         .toggle-btn { background: #333; width: 44px; height: 24px; border-radius: 12px; position: relative; transition: 0.3s; border: 1px solid #444;}
         .toggle-btn::after { content:''; position: absolute; left: 2px; top: 2px; width: 18px; height: 18px; background: #aaa; border-radius: 50%; transition: 0.3s; }
         .toggle-btn.on { background: var(--accent); border-color: var(--accent); }
         .toggle-btn.on::after { left: 22px; background: #fff; }
-        /* BLUE TOGGLE */
         .toggle-btn.blue-on.on { background: var(--power); border-color: var(--power); }
         
         input[type=range] { width: 100%; accent-color: var(--accent); cursor: grab; margin-top: 8px; height: 6px;}
@@ -216,18 +211,9 @@
             display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
         .search-item { padding: 12px; border-bottom: 1px solid #2a2a2a; font-size: 0.9rem; cursor: pointer; }
-        .search-item:hover { background: #2a2a2a; color: var(--accent); }
         
-        /* SYNC & ALERT */
-        .sync-box { 
-            margin-top: 25px; padding: 15px; border: 1px dashed #333; border-radius: 12px; 
-            text-align: center; background: rgba(255,255,255,0.02);
-        }
-        .btn-sync { 
-            background: transparent; color: #888; border: 1px solid #444; 
-            padding: 8px 14px; border-radius: 8px; font-size: 0.8rem; cursor: pointer; margin: 0 6px;
-        }
-        .btn-sync:hover { color: #fff; border-color: #fff; }
+        .sync-box { margin-top: 25px; padding: 15px; border: 1px dashed #333; border-radius: 12px; text-align: center; background: rgba(255,255,255,0.02); }
+        .btn-sync { background: transparent; color: #888; border: 1px solid #444; padding: 8px 14px; border-radius: 8px; font-size: 0.8rem; cursor: pointer; margin: 0 6px; }
 
         #toast {
             position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
@@ -281,7 +267,17 @@
     </div>
 
     <div class="portal">
-        <iframe id="myFrame" src="" allow="fullscreen"></iframe>
+        <div class="hub-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 36px; height: 36px;"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+        </div>
+        
+        <h2 style="margin: 0 0 12px 0; font-size: 1.4rem; font-weight: 800; letter-spacing: -0.5px;">Dashboard Actif</h2>
+        <p style="color: #aaa; font-size: 0.9rem; margin: 0 0 32px 0; max-width: 280px; line-height: 1.5;">Le registre officiel NerdMiner exige une ouverture directe sécurisée.</p>
+        
+        <a href="https://pool.nerdminer.io/#/app/3Cj9vqi9EhjBU6m6PKerKCshtHYDHPeZ8X" target="_blank" class="btn-standard" style="width: 100%; max-width: 280px;">
+            OUVRIR LE REGISTRE
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px; height:18px; margin-left:10px;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+        </a>
     </div>
 
     <div id="localMenu" class="popup-menu">
@@ -317,7 +313,7 @@
             </button>
         </div>
         
-        <button class="btn-standard" onclick="resetBattery()">
+        <button class="btn-standard" style="margin-bottom: 25px;" onclick="resetBattery()">
             JE VIENS DE RECHARGER
         </button>
         
@@ -329,7 +325,7 @@
         </div>
 
         <div class="control-row">
-            <label class="control-label">Ou corriger heure recharge</label>
+            <label class="control-label">Corriger l'heure de recharge</label>
             <input type="datetime-local" id="chargeInput" class="date-input" onchange="updateChargeTime(this.value)">
         </div>
         <div class="reset-info">Autonomie estimée : <span id="uptimeHours" style="color:#fff; font-weight:700;">0</span>h</div>
@@ -337,7 +333,7 @@
         <div class="control-row" style="margin-top:25px;">
             <label class="control-label">Ville Météo</label>
             <div class="city-input-group">
-                <input type="text" id="cityInput" class="city-input" placeholder="ex: Willems" spellcheck="false" autocomplete="off" onkeyup="searchCity(this.value)">
+                <input type="text" id="cityInput" class="city-input" placeholder="ex: Lille" spellcheck="false" autocomplete="off" onkeyup="searchCity(this.value)">
                 <button class="btn-ok" id="btnCity" onclick="saveCity()">OK</button>
                 <div id="searchResults"></div>
             </div>
@@ -354,12 +350,6 @@
             <label class="control-label">Calibrage</label>
             <input type="range" id="calibSlider" min="-20" max="20" value="0" oninput="updateOffset(this.value)">
             <div style="font-size:0.7rem; color:#888; text-align:right; margin-top:2px;">Offset: <span id="offsetVal" style="color:#fff;">+0</span>%</div>
-        </div>
-
-        <div class="sync-box">
-            <div class="control-label">Synchronisation</div>
-            <button class="btn-sync" onclick="exportConfig()">Copier Config</button>
-            <button class="btn-sync" onclick="importConfig()">Coller & Sync</button>
         </div>
     </div>
 
@@ -385,15 +375,7 @@
     </div>
 
     <script>
-        // --- LES 2 LIGNES CORRIGÉES ---
-        const myAddress = "3Cj9vqi9EhjBU6m6PKerKCshtHYDHPeZ8X";
-        const targetUrl = `https://pool.nerdminer.io/#/app/${myAddress}`; 
-        // ------------------------------
-
-        const iframe = document.getElementById('myFrame');
-        iframe.src = targetUrl;
-
-        // INIT
+        // INIT DATA
         let savedCity = localStorage.getItem('user_city') || "Lille";
         let lastCharge = parseInt(localStorage.getItem('last_charge_ts'));
         if(!lastCharge || isNaN(lastCharge)) {
@@ -412,7 +394,6 @@
         let userOffset = 0;
         let currentCode = 0; let currentIsDay = 1;
         
-        // --- MISE A JOUR IP PAR DEFAUT ---
         let savedIpMiner = localStorage.getItem('local_ip') || "192.168.1.150";
         let savedIpUlanzi = localStorage.getItem('ulanzi_ip') || "192.168.1.198";
         let currentBatteryLevel = 100;
@@ -449,10 +430,7 @@
         }
         function toggleDrawer() { 
             if(document.getElementById('drawerMenu').classList.contains('open')) closeAll();
-            else { 
-                closeAll(); document.getElementById('drawerMenu').classList.add('open'); 
-                showBackdrop(); updateMarket(); 
-            }
+            else { closeAll(); document.getElementById('drawerMenu').classList.add('open'); showBackdrop(); updateMarket(); }
         }
         function showBackdrop() { document.getElementById('backdrop').classList.add('active'); }
         function closeAll() {
@@ -460,14 +438,16 @@
             document.getElementById('backdrop').classList.remove('active');
             document.getElementById('searchResults').style.display = 'none';
         }
-        function reloadIframe() { 
+        function smartRefresh() { 
             const btn = document.getElementById('refreshBtn');
             btn.querySelector('svg').classList.add('spin');
-            iframe.src = 'about:blank'; setTimeout(() => iframe.src = targetUrl, 50); 
             setTimeout(() => btn.querySelector('svg').classList.remove('spin'), 1000); 
+            
+            updateMarket(); updateWeather(); calcBattery();
+            showToast("Données rafraîchies");
         }
 
-        // SAVE IP GENERIQUE
+        // IP SAVE
         function saveIp(key, val) { 
             localStorage.setItem(key, val); 
             if(key === 'local_ip') document.getElementById('localLink').href = "http://" + val;
@@ -484,7 +464,7 @@
             lastCharge = new Date().getTime(); 
             alertTriggered = false; 
             saveAndCalc(); 
-            alert("Batterie réinitialisée à 100%"); 
+            showToast("Batterie réinitialisée à 100%"); 
         }
         function updateChargeTime(val) { if(val) { lastCharge = new Date(val).getTime(); saveAndCalc(); } }
         function saveAndCalc() { localStorage.setItem('last_charge_ts', lastCharge); syncDateInput(); calcBattery(); }
@@ -499,9 +479,6 @@
                 document.getElementById('battBar').style.width = "100%";
                 document.getElementById('uptimeHours').innerText = "Illimitée";
                 document.getElementById('batteryDisplay').classList.add('mains-mode');
-                
-                let theoreticalLevel = 100 - (uptimeHours * (baseDrain + (isScreenOn?3.0:0))); 
-                if(theoreticalLevel <= 0) { lastCharge = new Date().getTime(); }
                 return;
             } else {
                 document.getElementById('batteryDisplay').classList.remove('mains-mode');
@@ -525,7 +502,6 @@
             currentBatteryLevel = level;
             level = Math.round(level);
             
-            // --- LOGIQUE ALERTE ---
             if(level <= 15 && !alertTriggered && level > 0) {
                 showToast("Batterie Faible (" + level + "%) !", true);
                 alertTriggered = true; 
@@ -536,7 +512,7 @@
             const bar = document.getElementById('battBar');
             if(level > 60) bar.style.background = "#32d74b"; else if(level > 20) bar.style.background = "#FFAD00"; else bar.style.background = "#ff453a";
         }
-        function updateOffset(val) { userOffset = parseInt(val); calcBattery(); }
+        function updateOffset(val) { userOffset = parseInt(val); calcBattery(); document.getElementById('offsetVal').innerText = (val > 0 ? "+"+val : val) + "%"; }
 
         function toggleScreen() { 
             isScreenOn = !isScreenOn; 
@@ -553,65 +529,6 @@
             calcBattery();
         }
 
-        // --- SYSTEME SYNC ---
-        function exportConfig() {
-            const data = {
-                ts: lastCharge,
-                screen: isScreenOn,
-                mains: isMainsConnected,
-                city: savedCity
-            };
-            const str = JSON.stringify(data);
-            navigator.clipboard.writeText(str).then(() => {
-                showToast("Config copiée ! Colle-la sur l'autre appareil.");
-            });
-        }
-
-        async function importConfig() {
-            try {
-                const text = await navigator.clipboard.readText();
-                const data = JSON.parse(text);
-                
-                if(data.ts) {
-                    lastCharge = data.ts;
-                    localStorage.setItem('last_charge_ts', lastCharge);
-                }
-                if(typeof data.screen !== 'undefined') {
-                    isScreenOn = data.screen;
-                    localStorage.setItem('user_screen_on', isScreenOn);
-                    const btn = document.getElementById('screenToggle');
-                    if(isScreenOn) btn.classList.add('on'); else btn.classList.remove('on');
-                }
-                if(typeof data.mains !== 'undefined') {
-                    isMainsConnected = data.mains;
-                    localStorage.setItem('user_mains_connected', isMainsConnected);
-                    const btn = document.getElementById('mainsToggle');
-                    if(isMainsConnected) btn.classList.add('on'); else btn.classList.remove('on');
-                }
-                
-                syncDateInput();
-                calcBattery();
-                showToast("Config synchronisée !");
-                setTimeout(() => location.reload(), 1000); 
-                
-            } catch(e) {
-                showToast("Erreur : Copie d'abord la config !");
-            }
-        }
-
-        function smartRefresh() {
-            const btn = document.getElementById('refreshBtn');
-            btn.querySelector('svg').classList.add('spin');
-            iframe.src = 'about:blank'; 
-            setTimeout(() => iframe.src = targetUrl, 50); 
-            setTimeout(() => btn.querySelector('svg').classList.remove('spin'), 1000); 
-            
-            if(!isMainsConnected && currentBatteryLevel <= 0) {
-                resetBattery();
-                showToast("Signal de retour : Batterie 100%");
-            }
-        }
-        
         function showToast(msg, isAlert = false) {
             const t = document.getElementById('toast');
             t.innerText = msg;
@@ -666,7 +583,9 @@
                 const now = new Date();
                 document.getElementById('wUpdate').innerText = "MAJ " + now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
                 calcBattery();
-            } catch(e) {}
+            } catch(e) {
+                document.getElementById('wIcon').classList.remove('blink');
+            }
         }
         function updateWeather() { let lat = localStorage.getItem('user_lat') || 50.6292; let lon = localStorage.getItem('user_lon') || 3.0573; fetchMeteo(lat, lon); }
 
@@ -682,7 +601,7 @@
             } catch(e) {}
         }
 
-        // START
+        // BOOT SEQUENCE
         updateWeather(); updateMarket(); calcBattery();
         setInterval(calcBattery, 60000); setInterval(updateWeather, 600000); setInterval(updateMarket, 30000);
 
